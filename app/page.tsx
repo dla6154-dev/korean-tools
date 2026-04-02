@@ -49,6 +49,7 @@ export default function Home() {
 
   // 기념일 상태
   const [annivDate, setAnnivDate] = useState("");
+  const [annivError, setAnnivError] = useState("");
   const [annivResult, setAnnivResult] = useState<null | {
     elapsedDays: number;
     start: Date;
@@ -58,6 +59,7 @@ export default function Home() {
 
   // 만 나이 상태
   const [birthDate, setBirthDate] = useState("");
+  const [ageError, setAgeError] = useState("");
   const [ageResult, setAgeResult] = useState<null | {
     manAge: number;
     koreanAge: number;
@@ -67,9 +69,19 @@ export default function Home() {
     nextBirthdayDate: Date;
   }>(null);
 
+  function parseDate(str: string): Date | null {
+    const match = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+    const [, y, m, d] = match.map(Number);
+    const date = new Date(y, m - 1, d);
+    if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null;
+    return date;
+  }
+
   function calcAnniv() {
-    if (!annivDate) return;
-    const start = new Date(annivDate);
+    setAnnivError("");
+    const start = parseDate(annivDate);
+    if (!start) { setAnnivError("날짜 형식을 확인해주세요. 예) 2024-01-01"); return; }
     start.setHours(0, 0, 0, 0);
     const elapsedDays = Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     const all = getAnniversaries(start, today);
@@ -82,8 +94,9 @@ export default function Home() {
   }
 
   function calcAge() {
-    if (!birthDate) return;
-    const birth = new Date(birthDate);
+    setAgeError("");
+    const birth = parseDate(birthDate);
+    if (!birth) { setAgeError("날짜 형식을 확인해주세요. 예) 1995-05-15"); return; }
     birth.setHours(0, 0, 0, 0);
     const manAge = calcManAge(birth, today);
     const koreanAge = today.getFullYear() - birth.getFullYear() + 1;
@@ -112,11 +125,16 @@ export default function Home() {
         <h2 className="text-lg font-bold text-slate-800 mb-4">💑 기념일 계산기</h2>
         <label className="block text-sm font-medium text-slate-600 mb-1">시작일 (기준일)</label>
         <input
-          type="date"
+          type="text"
           value={annivDate}
           onChange={(e) => setAnnivDate(e.target.value)}
-          className="w-full border border-slate-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-pink-400 mb-3"
+          onKeyDown={(e) => e.key === "Enter" && calcAnniv()}
+          placeholder="2024-01-01"
+          maxLength={10}
+          className="w-full border border-slate-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-pink-400 mb-1 placeholder-slate-300"
         />
+        {annivError && <p className="text-red-400 text-xs mb-2">{annivError}</p>}
+        {!annivError && <div className="mb-2" />}
         <button
           onClick={calcAnniv}
           disabled={!annivDate}
@@ -178,12 +196,16 @@ export default function Home() {
         <h2 className="text-lg font-bold text-slate-800 mb-4">🎂 만 나이 계산기</h2>
         <label className="block text-sm font-medium text-slate-600 mb-1">생년월일</label>
         <input
-          type="date"
+          type="text"
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
-          max={new Date().toISOString().split("T")[0]}
-          className="w-full border border-slate-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3"
+          onKeyDown={(e) => e.key === "Enter" && calcAge()}
+          placeholder="1995-05-15"
+          maxLength={10}
+          className="w-full border border-slate-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-400 mb-1 placeholder-slate-300"
         />
+        {ageError && <p className="text-red-400 text-xs mb-2">{ageError}</p>}
+        {!ageError && <div className="mb-2" />}
         <button
           onClick={calcAge}
           disabled={!birthDate}
