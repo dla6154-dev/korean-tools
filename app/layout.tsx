@@ -27,9 +27,11 @@ export default function RootLayout({
             <Link href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700">
               Korean Tools
             </Link>
-            <nav className="flex gap-4 text-sm font-medium text-slate-600">
+            <nav className="flex gap-4 text-sm font-medium text-slate-600 items-center">
               <Link href="/age" className="hover:text-blue-600 transition-colors">만 나이</Link>
               <Link href="/anniversary" className="hover:text-blue-600 transition-colors">기념일</Link>
+              <Link href="/en" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">EN</Link>
+              <Link href="/" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">KO</Link>
             </nav>
           </div>
         </header>
