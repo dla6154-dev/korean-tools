@@ -69,6 +69,12 @@ export default function EnPage() {
     manAge: number;
     koreanAge: number;
     totalDays: number;
+    totalWeeks: number;
+    remainingDaysAfterWeeks: number;
+    totalMonths: number;
+    monthsSinceLastBirthday: number;
+    daysSinceLastBirthday: number;
+    weeksAfterBirthday: number;
     birthDayOfWeek: string;
     nextBirthdayDays: number;
     nextBirthdayDate: Date;
@@ -97,11 +103,22 @@ export default function EnPage() {
     const manAge = calcManAge(birth, today);
     const koreanAge = today.getFullYear() - birth.getFullYear() + 1;
     const totalDays = Math.floor((today.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24));
+    const totalWeeks = Math.floor(totalDays / 7);
+    const remainingDaysAfterWeeks = totalDays % 7;
+    let totalMonths = (today.getFullYear() - birth.getFullYear()) * 12 + (today.getMonth() - birth.getMonth());
+    if (today.getDate() < birth.getDate()) totalMonths--;
+    const lastBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+    if (lastBirthday > today) lastBirthday.setFullYear(today.getFullYear() - 1);
+    const daysSinceLastBirthday = Math.floor((today.getTime() - lastBirthday.getTime()) / (1000 * 60 * 60 * 24));
+    let monthsSinceLastBirthday = today.getMonth() - birth.getMonth();
+    if (today.getDate() < birth.getDate()) monthsSinceLastBirthday--;
+    if (monthsSinceLastBirthday < 0) monthsSinceLastBirthday += 12;
+    const weeksAfterBirthday = Math.floor(daysSinceLastBirthday / 7);
     const birthDayOfWeek = getDayOfWeek(birth);
     const nextBirthday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
     if (nextBirthday < today) nextBirthday.setFullYear(today.getFullYear() + 1);
     const nextBirthdayDays = Math.ceil((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    setAgeResult({ manAge, koreanAge, totalDays, birthDayOfWeek, nextBirthdayDays, nextBirthdayDate: nextBirthday });
+    setAgeResult({ manAge, koreanAge, totalDays, totalWeeks, remainingDaysAfterWeeks, totalMonths, monthsSinceLastBirthday, daysSinceLastBirthday, weeksAfterBirthday, birthDayOfWeek, nextBirthdayDays, nextBirthdayDate: nextBirthday });
   }
 
   return (
@@ -224,7 +241,32 @@ export default function EnPage() {
               </div>
               <div className="bg-slate-50 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-slate-700">{ageResult.totalDays.toLocaleString()}</div>
-                <div className="text-xs text-slate-400 mt-1">Days Alive</div>
+                <div className="text-xs text-slate-400 mt-1">Days Alive (Total)</div>
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-xl p-3 space-y-2 text-sm">
+              <p className="text-xs font-semibold text-slate-400 mb-1">Other Units</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Total weeks</span>
+                  <span className="font-semibold text-slate-700">{ageResult.totalWeeks.toLocaleString()}w {ageResult.remainingDaysAfterWeeks}d</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Total months</span>
+                  <span className="font-semibold text-slate-700">{ageResult.totalMonths.toLocaleString()} months</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Yrs + months</span>
+                  <span className="font-semibold text-slate-700">{ageResult.manAge}y {ageResult.monthsSinceLastBirthday}m</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Yrs + days</span>
+                  <span className="font-semibold text-slate-700">{ageResult.manAge}y {ageResult.daysSinceLastBirthday}d</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Yrs + weeks</span>
+                  <span className="font-semibold text-slate-700">{ageResult.manAge}y {ageResult.weeksAfterBirthday}w</span>
+                </div>
               </div>
             </div>
             <div className="bg-blue-50 rounded-xl p-3 text-sm text-slate-600 space-y-1">
