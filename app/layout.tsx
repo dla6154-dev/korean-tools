@@ -40,6 +40,7 @@ export default function RootLayout({
             <nav className="flex gap-4 text-sm font-medium text-slate-600 items-center">
               <Link href="/age" className="hover:text-blue-600 transition-colors">만 나이</Link>
               <Link href="/anniversary" className="hover:text-blue-600 transition-colors">기념일</Link>
+              <Link href="/characters" className="hover:text-blue-600 transition-colors">글자수</Link>
               <Link href="/en" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">EN</Link>
               <Link href="/" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">KO</Link>
             </nav>
