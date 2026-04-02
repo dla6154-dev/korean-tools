@@ -26,15 +26,14 @@ function getDaysFromNow(date: Date, today: Date) {
 
 function getAnniversaries(start: Date, today: Date) {
   const milestones: { label: string; date: Date; daysFromNow: number }[] = [];
-  const dayMilestones = [100, 200, 300, 365, 500, 600, 700, 730, 1000, 1095, 1461, 1825, 3650];
-  const yearMilestones = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const dayMilestones = [22, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 2000, 3000];
 
   for (const d of dayMilestones) {
     const date = new Date(start);
     date.setDate(date.getDate() + d - 1);
     milestones.push({ label: `Day ${d}`, date, daysFromNow: getDaysFromNow(date, today) });
   }
-  for (const y of yearMilestones) {
+  for (let y = 1; y <= 10; y++) {
     const date = new Date(start);
     date.setFullYear(date.getFullYear() + y);
     milestones.push({ label: `${y}yr`, date, daysFromNow: getDaysFromNow(date, today) });
