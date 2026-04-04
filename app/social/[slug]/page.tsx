@@ -36,13 +36,10 @@ export default async function SocialArticlePage({
       </Link>
       <h1 className="text-2xl font-bold text-slate-900 mb-2">{article.title}</h1>
       <p className="text-sm text-slate-400 mb-8">{article.date}</p>
-      <div className="space-y-5">
-        {article.paragraphs.map((p, i) => (
-          <p key={i} className="text-slate-700 leading-relaxed text-[15px]">
-            {p}
-          </p>
-        ))}
-      </div>
+      <div
+        className="text-slate-700 text-[15px]"
+        dangerouslySetInnerHTML={{ __html: article.content }}
+      />
       <div className="mt-10 pt-6 border-t border-slate-200">
         <Link href="/social" className="text-sm text-green-700 hover:text-green-800">
           ← 목록으로 돌아가기

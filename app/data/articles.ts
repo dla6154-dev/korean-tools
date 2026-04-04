@@ -3,133 +3,253 @@ export type Article = {
   title: string;
   date: string;
   summary: string;
-  paragraphs: string[];
+  content: string; // HTML string
 };
 
 export type Category = "stocks" | "bitcoin" | "social";
 
 export const articles: Record<Category, Article[]> = {
-  stocks: [
-    {
-      slug: "kospi-3000-analysis",
-      title: "코스피 3000 돌파 가능성 분석",
-      date: "2026-04-03",
-      summary:
-        "코스피 지수가 3000포인트를 재탈환할 수 있을지 주요 지표와 거시경제 환경을 바탕으로 분석합니다.",
-      paragraphs: [
-        "코스피 지수는 2026년 들어 박스권 횡보를 지속하고 있습니다. 글로벌 금리 동향, 원/달러 환율, 외국인 수급 흐름이 지수 방향성을 결정짓는 핵심 변수로 작용하고 있습니다.",
-        "미국 연방준비제도(Fed)의 금리 인하 기대감이 높아지면서 글로벌 위험자산 선호 심리가 개선될 경우, 코스피가 3000선을 회복할 여력이 충분하다는 분석이 나옵니다.",
-        "다만 국내 경기 둔화와 기업 이익 감소 우려가 상승 탄력을 제한할 수 있습니다. 반도체, 자동차, 배터리 업종의 실적 개선 여부가 관건입니다.",
-        "기술적 분석 측면에서는 2,700~2,800 포인트 구간이 중요한 지지선으로 작용하고 있으며, 이 구간을 지켜내는지 여부가 3000 돌파 시도의 출발점이 될 것입니다.",
-      ],
-    },
-    {
-      slug: "dividend-stocks-2026",
-      title: "2026년 주목해야 할 국내 배당주 TOP 5",
-      date: "2026-04-01",
-      summary:
-        "고금리 시대가 끝나가는 지금, 안정적인 배당 수익을 제공하는 국내 배당주를 선별해 소개합니다.",
-      paragraphs: [
-        "금리 인하 사이클 진입과 함께 배당주에 대한 관심이 높아지고 있습니다. 배당 수익률이 예금 금리를 웃돌 경우 자금이 주식 시장으로 유입되는 경향이 있습니다.",
-        "국내 배당주 중에서는 금융주, 통신주, 에너지주가 안정적인 배당을 지급해 왔습니다. 특히 삼성화재, KT, 한국전력(배당 재개 기대)이 주목받고 있습니다.",
-        "주주환원 정책 강화를 선언한 기업들을 중심으로 배당 성향이 높아지는 추세입니다. 자사주 매입·소각과 함께 배당을 병행하는 기업이 장기 투자자에게 유리합니다.",
-        "배당주 투자 시에는 단순 배당 수익률뿐만 아니라 기업의 재무 건전성, 배당 지속 가능성, 업종 성장성을 종합적으로 고려해야 합니다.",
-      ],
-    },
-    {
-      slug: "us-tariff-export-stocks",
-      title: "미국 관세 이슈가 한국 수출주에 미치는 영향",
-      date: "2026-03-28",
-      summary:
-        "미국의 보호무역 기조 강화가 한국 주요 수출 기업에 어떤 영향을 미치는지 살펴봅니다.",
-      paragraphs: [
-        "미국이 수입 자동차와 반도체에 대한 관세를 강화하는 방향으로 무역 정책을 조정하면서, 한국의 주요 수출 기업들이 직접적인 영향권에 들어왔습니다.",
-        "현대·기아차는 미국 내 현지 생산 비중을 높이는 전략으로 관세 리스크를 부분적으로 회피하고 있습니다. 그러나 부품 업체들의 타격은 불가피하다는 전망이 많습니다.",
-        "삼성전자와 SK하이닉스는 반도체 관세 부과 대상에서 일부 제품이 제외될 가능성이 있지만, 미중 무역 갈등과 맞물려 공급망 재편 압력이 커지고 있습니다.",
-        "전문가들은 관세 리스크 대응력이 높은 기업과 그렇지 않은 기업 간의 주가 차별화가 심화될 것으로 예상합니다. 미국 현지 생산 능력 확보 여부가 핵심 판단 기준이 됩니다.",
-      ],
-    },
-  ],
+  stocks: [],
+  social: [],
   bitcoin: [
     {
-      slug: "bitcoin-halving-outlook",
-      title: "비트코인 반감기 이후 가격 전망",
-      date: "2026-04-04",
-      summary:
-        "2024년 반감기 이후 비트코인 가격 흐름을 되짚어보고 향후 전망을 분석합니다.",
-      paragraphs: [
-        "비트코인은 약 4년마다 채굴 보상이 절반으로 줄어드는 '반감기'를 겪습니다. 2024년 4월 반감기 이후 비트코인은 역사적 고점을 경신하며 강세장을 이어왔습니다.",
-        "과거 세 차례 반감기 이후 패턴을 보면, 반감기 후 12~18개월 사이에 고점을 형성하는 경향이 있었습니다. 이 패턴이 이번에도 적용된다면 2026년 상반기가 중요한 시점이 됩니다.",
-        "미국 비트코인 현물 ETF 승인 이후 기관 자금의 유입이 지속되고 있다는 점은 긍정적 요인입니다. 특히 연기금과 자산운용사들의 포트폴리오 편입이 늘어나는 추세입니다.",
-        "다만 각국 규제 강화, 거시경제 불확실성, 암호화폐 시장 특유의 높은 변동성은 여전히 주요 리스크 요인으로 작용합니다. 분산 투자 원칙을 지키는 것이 중요합니다.",
-      ],
-    },
-    {
-      slug: "korean-crypto-regulation",
-      title: "국내 가상자산 거래소 규제 현황",
-      date: "2026-04-02",
-      summary:
-        "2025~2026년 강화된 국내 가상자산 규제 환경과 주요 거래소들의 대응 현황을 정리합니다.",
-      paragraphs: [
-        "한국은 2025년부터 가상자산이용자보호법을 시행하며 가상자산 시장에 대한 제도적 기반을 마련했습니다. 투자자 보호와 불공정거래 방지를 위한 의무가 거래소에 부과됐습니다.",
-        "업비트, 빗썸, 코인원 등 주요 거래소들은 이상거래 감시 시스템 강화, 자산 분리 보관, 해킹 피해 배상 준비금 마련 등 규제 대응에 적극 나서고 있습니다.",
-        "금융당국은 가상자산사업자(VASP)에 대한 자금세탁방지 의무를 강화하고, 실명 계좌 발급 요건을 엄격히 적용하는 방향으로 감독을 이어가고 있습니다.",
-        "규제 환경이 성숙해질수록 기관 투자자의 시장 참여 가능성이 높아진다는 점에서, 장기적으로는 시장 건전성 제고에 긍정적인 영향을 미칠 것으로 기대됩니다.",
-      ],
-    },
-    {
-      slug: "ethereum-vs-bitcoin-2026",
-      title: "이더리움 vs 비트코인: 2026년 포트폴리오 전략",
-      date: "2026-03-25",
-      summary:
-        "두 대표 암호화폐의 특성 차이를 비교하고 2026년 투자 포트폴리오 구성 시 고려할 점을 설명합니다.",
-      paragraphs: [
-        "비트코인과 이더리움은 암호화폐 시장에서 시가총액 1, 2위를 차지하는 대표 자산입니다. 두 자산은 목적과 기술적 특성에서 큰 차이를 보입니다.",
-        "비트코인은 '디지털 금'으로서 가치 저장 수단의 역할에 집중합니다. 공급량이 2100만 개로 제한되어 있어 희소성이 강점입니다. 반면 이더리움은 스마트 컨트랙트 플랫폼으로 DeFi, NFT 등 다양한 애플리케이션의 기반이 됩니다.",
-        "2026년 현재 이더리움은 지분증명(PoS) 전환 이후 에너지 효율성이 크게 개선됐으며, ETF 승인과 함께 기관 수요가 증가하고 있습니다. 다만 경쟁 블록체인(솔라나 등)의 부상으로 시장 점유율 경쟁이 심화됩니다.",
-        "분산 투자 관점에서 두 자산을 함께 보유하는 전략이 일반적으로 권장됩니다. 비트코인을 안전자산 역할로 더 비중을 두되, 성장성을 노린다면 이더리움 비중을 일부 확보하는 것이 합리적입니다.",
-      ],
-    },
-  ],
-  social: [
-    {
-      slug: "korean-peninsula-2026",
-      title: "2026년 한반도 정세 변화와 전망",
+      slug: "crypto-daily-2026-04-05",
+      title: "코인 시황 2026.04.05 — 상승 Top 10 / 하락 Top 10",
       date: "2026-04-05",
       summary:
-        "남북 관계, 북미 협상 재개 가능성, 주변 강대국의 움직임을 통해 한반도 정세를 분석합니다.",
-      paragraphs: [
-        "2026년 한반도 정세는 북한의 전략적 도발과 대화 모색이 교차하는 복잡한 양상을 보이고 있습니다. 북한은 핵·미사일 능력 고도화를 지속하면서도 경제적 어려움으로 인해 외교적 출구를 탐색하는 신호를 간헐적으로 보내고 있습니다.",
-        "미국 행정부의 대북 정책 방향이 한반도 정세에 중요한 변수로 작용합니다. 미중 전략 경쟁 속에서 북한 문제는 미국의 동아시아 전략과 밀접하게 연동되어 있습니다.",
-        "한국은 한미 동맹을 바탕으로 한 억지력 강화와 대화 재개 노력을 병행하는 '투트랙 전략'을 유지하고 있습니다. 남북 경제 협력 재개 가능성은 여전히 불투명한 상황입니다.",
-        "전문가들은 단기적으로는 현상 유지 가능성이 높지만, 중장기적으로 비핵화 협상의 틀을 새롭게 모색할 필요성이 커질 것으로 전망합니다.",
-      ],
+        "SIREN +282.9%, StakeStone +76.1% 등 급등 코인과 edgeX -25.4%, Cysic -20.7% 등 급락 코인 및 관련 투자 스토리를 정리합니다.",
+      content: `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 오늘의 상승 코인 Top 10</h2>
+<div class="overflow-x-auto mb-6">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-green-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-green-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">Siren</td><td class="border border-slate-200 px-3 py-2 font-mono">SIREN</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+282.9%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">StakeStone</td><td class="border border-slate-200 px-3 py-2 font-mono">STO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+76.1%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">Janction</td><td class="border border-slate-200 px-3 py-2 font-mono">JCT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+60.0%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">Pippin</td><td class="border border-slate-200 px-3 py-2 font-mono">PIPPIN</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+37.7%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">Arcblock</td><td class="border border-slate-200 px-3 py-2 font-mono">ABT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+31.2%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">Perle</td><td class="border border-slate-200 px-3 py-2 font-mono">PRL</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+21.1%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">Yooldo Games</td><td class="border border-slate-200 px-3 py-2 font-mono">ESPORTS</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+20.8%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">Polymesh</td><td class="border border-slate-200 px-3 py-2 font-mono">POLYX</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+16.1%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">Sahara AI</td><td class="border border-slate-200 px-3 py-2 font-mono">SAHARA</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+15.1%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">Core</td><td class="border border-slate-200 px-3 py-2 font-mono">CORE</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+14.7%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 오늘의 하락 코인 Top 10</h2>
+<div class="overflow-x-auto mb-8">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-red-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-red-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">edgeX</td><td class="border border-slate-200 px-3 py-2 font-mono">EDGE</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-25.4%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">Cysic</td><td class="border border-slate-200 px-3 py-2 font-mono">CYS</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-20.7%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">TAGGER</td><td class="border border-slate-200 px-3 py-2 font-mono">TAG</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-14.8%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">TRIA</td><td class="border border-slate-200 px-3 py-2 font-mono">TRIA</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-13.0%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">Unibase</td><td class="border border-slate-200 px-3 py-2 font-mono">UB</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-11.3%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">Stargate Finance</td><td class="border border-slate-200 px-3 py-2 font-mono">STG</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-10.2%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">MEZO</td><td class="border border-slate-200 px-3 py-2 font-mono">MEZO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-10.0%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">Babylon</td><td class="border border-slate-200 px-3 py-2 font-mono">BABY</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-9.6%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">Impossible Cloud Network</td><td class="border border-slate-200 px-3 py-2 font-mono">ICNT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-8.9%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">Audiera</td><td class="border border-slate-200 px-3 py-2 font-mono">BEAT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-8.6%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="text-xl font-bold mb-4 mt-8">💬 오늘의 급등 코인 관련 투자 이야기</h2>
+
+<div class="space-y-5">
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+    <p class="font-semibold text-amber-800 mb-1">🔥 SIREN, 하루 만에 +282% — "한 달 치 월급이 하루 만에"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">SIREN은 2026년 3월 말부터 시장의 주목을 받기 시작했습니다. 3월 22일 역대 최고가 $3.61을 기록한 후 조정을 받았지만, 4월 5일 다시 폭발적인 상승세를 보이며 하루 만에 282%를 돌파했습니다. 해외 커뮤니티에서는 "3월 중순 $0.1대에 분할 매수한 후 오늘 일부를 정리했다. 초기 투자금 대비 20배 이상 수익"이라는 글이 화제가 됐습니다. 그러나 MEXC, WEEX 등 분석 기관들은 "단기 급등 이후 차익 실현 매물이 쏟아질 수 있다"며 신규 진입에 주의를 요구했습니다.</p>
+  </div>
+
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <p class="font-semibold text-blue-800 mb-1">📊 StakeStone(STO) +76% — 900% 급등 이후 재반등</p>
+    <p class="text-sm text-slate-700 leading-relaxed">STO는 4월 2일 $1.74까지 900% 폭등했다가 60% 급락하는 극적인 흐름을 보였습니다. 오늘 다시 76% 반등하며 눈길을 끌었습니다. CryptoTimes 보도에 따르면, 당시 단기 트레이더 중 일부는 $0.25 매수 후 $1.5대에 매도해 "5배 수익을 챙겼다"는 증언이 있었습니다. 다만 고점 근처에서 진입한 투자자들은 큰 손실을 입은 것으로 알려졌으며, 전문가들은 "토큰 언락 물량이 남아 있어 추격 매수는 위험하다"고 경고하고 있습니다.</p>
+  </div>
+
+  <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+    <p class="font-semibold text-purple-800 mb-1">🎮 Yooldo Games(ESPORTS) +20% — 게임파이 섹터 동반 강세</p>
+    <p class="text-sm text-slate-700 leading-relaxed">ESPORTS는 게임파이(GameFi) 섹터의 관심이 높아지면서 오늘 20.8% 상승했습니다. 소규모 투자자 커뮤니티에서는 "게임파이 테마 ETF처럼 분산해 ESPORTS·CORE 등을 소액 매수했는데 둘 다 10~20% 올라 하루에 포트 수익률이 크게 개선됐다"는 후기가 공유됐습니다. 단, 유동성이 낮은 소형 코인이라 변동성이 크고 주의가 필요합니다.</p>
+  </div>
+</div>
+
+<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: CoinGecko, CoinMarketCap (2026-04-05 기준). 본 내용은 투자 권유가 아니며 투자 손실에 대한 책임은 투자자 본인에게 있습니다.</p>
+`,
     },
     {
-      slug: "global-ai-regulation",
-      title: "글로벌 AI 규제 동향과 한국의 대응",
-      date: "2026-04-01",
+      slug: "crypto-daily-2026-04-04",
+      title: "코인 시황 2026.04.04 — 상승 Top 10 / 하락 Top 10",
+      date: "2026-04-04",
       summary:
-        "EU AI법 시행, 미국의 AI 안전 프레임워크, 중국의 AI 거버넌스 움직임을 살펴보고 한국의 대응 방향을 점검합니다.",
-      paragraphs: [
-        "EU는 2025년부터 세계 최초의 포괄적 AI 규제법인 'EU AI Act'를 단계적으로 시행하고 있습니다. 고위험 AI 시스템에 대한 투명성, 안전성, 책임성 요건이 핵심입니다.",
-        "미국은 EU와 달리 산업 육성과 혁신을 우선시하는 접근법을 취하고 있습니다. 다만 AI 안전 연구소 설립, 기업 자율 규약 도입 등을 통해 최소한의 안전망을 구축하고 있습니다.",
-        "한국은 '인공지능 기본법'을 마련하고 AI 윤리 기준을 강화하는 방향으로 제도를 정비하고 있습니다. AI 강국으로의 도약과 안전한 AI 생태계 조성이라는 두 가지 목표를 동시에 추구합니다.",
-        "글로벌 AI 규제의 파편화는 기업들에게 컴플라이언스 부담을 가중시킵니다. 한국 기업들은 EU 시장 진출 시 AI Act 요건을 충족하기 위한 준비가 필요합니다.",
-      ],
+        "edgeX(EDGE) +34.7% 선두, ALGO·TRAC·THETA 동반 상승. 전체 시총 2.38조 달러 횡보 속 섹터별 차별화 장세.",
+      content: `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 오늘의 상승 코인 Top 10</h2>
+<div class="overflow-x-auto mb-6">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-green-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-green-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">edgeX</td><td class="border border-slate-200 px-3 py-2 font-mono">EDGE</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+34.70%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">Algorand</td><td class="border border-slate-200 px-3 py-2 font-mono">ALGO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+11.74%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">OriginTrail</td><td class="border border-slate-200 px-3 py-2 font-mono">TRAC</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+11.17%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">Theta Network</td><td class="border border-slate-200 px-3 py-2 font-mono">THETA</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+11.03%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">Sei</td><td class="border border-slate-200 px-3 py-2 font-mono">SEI</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+5.81%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">Bitcoin SV</td><td class="border border-slate-200 px-3 py-2 font-mono">BSV</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+5.30%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">VeChain</td><td class="border border-slate-200 px-3 py-2 font-mono">VET</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+4.80%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">PancakeSwap</td><td class="border border-slate-200 px-3 py-2 font-mono">CAKE</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+4.20%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">NEAR Protocol</td><td class="border border-slate-200 px-3 py-2 font-mono">NEAR</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+3.90%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">Zebec Network</td><td class="border border-slate-200 px-3 py-2 font-mono">ZBC</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+3.50%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 오늘의 하락 코인 Top 10</h2>
+<div class="overflow-x-auto mb-8">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-red-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-red-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">ZeroLend</td><td class="border border-slate-200 px-3 py-2 font-mono">ZRO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-8.49%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">Fetch.ai</td><td class="border border-slate-200 px-3 py-2 font-mono">FET</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-6.00%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">Hyperliquid</td><td class="border border-slate-200 px-3 py-2 font-mono">HYPE</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-5.05%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">Hedera</td><td class="border border-slate-200 px-3 py-2 font-mono">HBAR</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-5.54%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">Morpho</td><td class="border border-slate-200 px-3 py-2 font-mono">MORPHO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-4.86%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">Midnight</td><td class="border border-slate-200 px-3 py-2 font-mono">NIGHT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-4.36%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">JUST</td><td class="border border-slate-200 px-3 py-2 font-mono">JST</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-3.60%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">Monero</td><td class="border border-slate-200 px-3 py-2 font-mono">XMR</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-3.48%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">BNB</td><td class="border border-slate-200 px-3 py-2 font-mono">BNB</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-3.20%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">StakeStone</td><td class="border border-slate-200 px-3 py-2 font-mono">STO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-2.90%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="text-xl font-bold mb-4 mt-8">💬 오늘의 급등 코인 관련 투자 이야기</h2>
+
+<div class="space-y-5">
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+    <p class="font-semibold text-amber-800 mb-1">⚡ edgeX(EDGE) 3일 연속 급등 — "적립식 매수로 75% 수익"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">edgeX는 3월 31일 최저점에서 오늘까지 3거래일 연속 상승하며 누적 75.73%의 수익률을 기록했습니다. BlockchainMagazine 보도에 따르면 EDGE는 4월 1일 25%, 4월 2일 20.5%, 4월 3일 21.4%, 오늘 34.7%로 연속 강세를 보였습니다. 해외 트레이더 커뮤니티에서는 "3월 말 저점에서 분할 매수 후 오늘 절반 정리, 투자금 대비 60% 이상 수익 실현"이라는 후기가 공유되며 화제가 됐습니다. edgeX는 24/7 탈중앙화 거래 인프라를 제공하는 프로젝트로, 거래량 $8000억 돌파와 사용자 30만명 달성 소식이 상승 동력으로 작용했습니다.</p>
+  </div>
+
+  <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+    <p class="font-semibold text-green-800 mb-1">🔵 Algorand(ALGO) 이틀 연속 두 자릿수 상승 — "오래 기다린 보람"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">ALGO는 4월 3일 +7.68%에 이어 오늘 +11.74%로 이틀 연속 강세를 보였습니다. CoinGabbar 보도에 따르면 거래량 $215M을 기록하며 시장 전반이 약세인 가운데 역행 상승했습니다. 국내 커뮤니티에서는 "알고란드를 2년 넘게 홀딩했는데 드디어 움직인다. 오늘 일부 익절해서 수익 실현했다"는 글이 주목받았습니다. 알고란드는 최근 DeFi 생태계 확장과 기관 파트너십 소식이 이어지며 재평가받고 있습니다.</p>
+  </div>
+</div>
+
+<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: CoinGabbar, CoinCodex, CoinMarketCap (2026-04-04 기준). 본 내용은 투자 권유가 아니며 투자 손실에 대한 책임은 투자자 본인에게 있습니다.</p>
+`,
     },
     {
-      slug: "us-china-trade-korea",
-      title: "미중 무역 갈등 심화와 한국 경제 영향",
-      date: "2026-03-30",
+      slug: "crypto-daily-2026-04-03",
+      title: "코인 시황 2026.04.03 — 상승 Top 10 / 하락 Top 10",
+      date: "2026-04-03",
       summary:
-        "미중 간 기술·무역 패권 경쟁이 격화되는 가운데 한국 경제가 받는 압력과 대응 전략을 분석합니다.",
-      paragraphs: [
-        "미중 무역 갈등은 단순한 관세 전쟁을 넘어 반도체, 배터리, 희토류 등 첨단 기술 공급망 전반에 걸친 패권 경쟁으로 진화하고 있습니다. 한국은 양국 모두와 긴밀한 경제 관계를 유지하고 있어 '선택의 압박'에 직면해 있습니다.",
-        "미국의 반도체법(CHIPS Act), 인플레이션감축법(IRA) 등은 한국 기업의 미국 내 투자를 유도하면서도 중국 사업 제한이라는 조건을 달고 있어 기업들의 전략적 셈법이 복잡해졌습니다.",
-        "중국은 한국의 최대 수출 시장이지만, 중국 경기 둔화와 자국 산업 육성 정책으로 인해 한국의 대중 수출이 구조적으로 감소하는 추세입니다. 이는 수출 다변화의 필요성을 높이고 있습니다.",
-        "한국 정부와 기업들은 인도, 동남아, 중동 시장 개척을 통한 수출 다변화와 함께, 핵심 기술 경쟁력 강화로 미중 사이에서 독자적인 위상을 확보하는 전략을 추진하고 있습니다.",
-      ],
+        "ZND +180%, Cartesi +88% 등 중소형 코인 강세. 전체 시총 2.38조 달러 -2.4% 하락 속 DRIFT 해킹 사태로 공포 지수 9 기록.",
+      content: `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 오늘의 상승 코인 Top 10</h2>
+<div class="overflow-x-auto mb-6">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-green-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-green-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">Zend</td><td class="border border-slate-200 px-3 py-2 font-mono">ZND</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+180.90%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">Cartesi</td><td class="border border-slate-200 px-3 py-2 font-mono">CTSI</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+88.84%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">Neutron</td><td class="border border-slate-200 px-3 py-2 font-mono">NTRN</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+47.19%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">Solv Protocol</td><td class="border border-slate-200 px-3 py-2 font-mono">SOLV</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+37.06%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">BR</td><td class="border border-slate-200 px-3 py-2 font-mono">BR</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+32.71%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">REVU</td><td class="border border-slate-200 px-3 py-2 font-mono">REVU</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+26.84%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">Algorand</td><td class="border border-slate-200 px-3 py-2 font-mono">ALGO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+7.68%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">MemeCore</td><td class="border border-slate-200 px-3 py-2 font-mono">M</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+7.51%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">Quant</td><td class="border border-slate-200 px-3 py-2 font-mono">QNT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+5.57%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">Ethereum Classic</td><td class="border border-slate-200 px-3 py-2 font-mono">ETC</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-green-600">+4.20%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 오늘의 하락 코인 Top 10</h2>
+<div class="overflow-x-auto mb-8">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-red-50">
+        <th class="border border-slate-200 px-3 py-2 text-left">순위</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">코인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">심볼</th>
+        <th class="border border-slate-200 px-3 py-2 text-right text-red-700">24h 등락률</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="border border-slate-200 px-3 py-2">1</td><td class="border border-slate-200 px-3 py-2">Drift Protocol</td><td class="border border-slate-200 px-3 py-2 font-mono">DRIFT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-40.00%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">2</td><td class="border border-slate-200 px-3 py-2">Uniswap</td><td class="border border-slate-200 px-3 py-2 font-mono">UNI</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-10.74%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">3</td><td class="border border-slate-200 px-3 py-2">Ethena</td><td class="border border-slate-200 px-3 py-2 font-mono">ENA</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-9.35%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">4</td><td class="border border-slate-200 px-3 py-2">Midnight</td><td class="border border-slate-200 px-3 py-2 font-mono">NIGHT</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-6.87%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">5</td><td class="border border-slate-200 px-3 py-2">StakeStone</td><td class="border border-slate-200 px-3 py-2 font-mono">STO</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-49.80%*</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">6</td><td class="border border-slate-200 px-3 py-2">BNB</td><td class="border border-slate-200 px-3 py-2 font-mono">BNB</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-3.75%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">7</td><td class="border border-slate-200 px-3 py-2">XRP</td><td class="border border-slate-200 px-3 py-2 font-mono">XRP</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-1.57%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">8</td><td class="border border-slate-200 px-3 py-2">Bitcoin</td><td class="border border-slate-200 px-3 py-2 font-mono">BTC</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-0.82%</td></tr>
+      <tr><td class="border border-slate-200 px-3 py-2">9</td><td class="border border-slate-200 px-3 py-2">Ethereum</td><td class="border border-slate-200 px-3 py-2 font-mono">ETH</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-0.75%</td></tr>
+      <tr class="bg-slate-50"><td class="border border-slate-200 px-3 py-2">10</td><td class="border border-slate-200 px-3 py-2">Solana</td><td class="border border-slate-200 px-3 py-2 font-mono">SOL</td><td class="border border-slate-200 px-3 py-2 text-right font-semibold text-red-600">-0.60%</td></tr>
+    </tbody>
+  </table>
+  <p class="text-xs text-slate-400 mt-1">* STO는 4월 2일 $1.74 고점 대비 기준</p>
+</div>
+
+<h2 class="text-xl font-bold mb-4 mt-8">💬 오늘의 급등 코인 관련 투자 이야기</h2>
+
+<div class="space-y-5">
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+    <p class="font-semibold text-red-800 mb-1">⚠️ DRIFT 해킹 -40% 충격 — "시장 전체가 두려움에 빠졌다"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">오늘 가장 큰 이슈는 Drift Protocol이 해킹 공격을 받아 24시간 만에 40% 폭락한 사건입니다. 이로 인해 시장 전체의 공포 지수(Fear & Greed Index)가 9를 기록하며 '극단적 공포' 상태에 진입했습니다. CoinGabbar에 따르면 전체 암호화폐 시총이 2.38조 달러로 2.4% 하락했습니다. 해킹 피해를 입은 투자자들은 커뮤니티에서 "분산 투자와 하드웨어 지갑 보관의 중요성을 다시 느꼈다"는 반응을 보였습니다.</p>
+  </div>
+
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+    <p class="font-semibold text-amber-800 mb-1">🚀 Cartesi(CTSI) +88% 급등 — "Rollups V2 기대감 폭발"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">CTSI는 오늘 하루 동안 88.84%라는 경이로운 상승률을 기록했습니다. 이는 카르테시의 Rollups V2, Node V2 등 기술 업그레이드 마일스톤이 임박했다는 소식이 촉매가 됐습니다. 해외 암호화폐 커뮤니티에서는 "수개월 전부터 조금씩 모아온 CTSI가 오늘 한 방에 터졌다. 연간 목표 수익률을 하루 만에 달성했다"는 글이 빠르게 퍼졌습니다. 다만 전문가들은 "개발 이슈나 일정 지연 시 급반락 가능성이 있으니 수익 실현 계획을 세워두는 것이 중요하다"고 조언했습니다.</p>
+  </div>
+
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <p class="font-semibold text-blue-800 mb-1">💡 Zend(ZND) +180% — "KuCoin 단독 급등, 유동성 함정 주의"</p>
+    <p class="text-sm text-slate-700 leading-relaxed">ZND는 KuCoin 기준 180.90%라는 압도적 상승률을 기록했지만, 이는 주로 특정 거래소 내 유동성이 낮은 상황에서 발생한 급등입니다. 실제로 거래 가능한 물량이 적어 소수 매수만으로도 가격이 크게 움직일 수 있었습니다. 일부 투자자는 "소액으로 큰 수익을 봤다"고 전하지만, 분석가들은 "이런 패턴은 대규모 차익 실현 시 순식간에 원상복구될 위험이 크다"고 경고했습니다. Nestree 리포트에 따르면 공포 구간에서 DCA(분할 매수) 전략을 쓴 투자자들이 평균 202%의 수익을 기록했다는 통계도 있습니다.</p>
+  </div>
+</div>
+
+<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: KuCoin, CoinGabbar, CoinGecko (2026-04-03 기준). 본 내용은 투자 권유가 아니며 투자 손실에 대한 책임은 투자자 본인에게 있습니다.</p>
+`,
     },
   ],
 };
