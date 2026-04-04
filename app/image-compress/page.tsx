@@ -14,6 +14,7 @@ const T = {
     dropSub: "JPG, PNG, WebP, GIF 지원 · 여러 파일 동시 가능",
     loading: "압축 중...",
     saved: "절약",
+    noSaving: "원본이 더 작음",
     images: "개 이미지",
     downloadAll: "전체 다운로드",
     reset: "초기화",
@@ -31,6 +32,7 @@ const T = {
     dropSub: "Supports JPG, PNG, WebP, GIF · Multiple files at once",
     loading: "Compressing...",
     saved: "saved",
+    noSaving: "Original is smaller",
     images: " images",
     downloadAll: "Download all",
     reset: "Reset",
@@ -64,7 +66,10 @@ function compressImage(file: File, quality: number, maxWidth: number): Promise<C
         const mimeType = file.type === "image/png" ? "image/png" : "image/jpeg";
         canvas.toBlob((blob) => {
           if (!blob) { reject(new Error("Compression failed")); return; }
-          resolve({ id: Date.now() + Math.random(), name: file.name, originalSize: file.size, compressedSize: blob.size, originalUrl: URL.createObjectURL(file), compressedUrl: URL.createObjectURL(blob), width, height });
+          // If compressed is larger than original, use original file instead
+          const useOriginal = blob.size >= file.size;
+          const finalBlob = useOriginal ? file : blob;
+          resolve({ id: Date.now() + Math.random(), name: file.name, originalSize: file.size, compressedSize: finalBlob.size, originalUrl: URL.createObjectURL(file), compressedUrl: URL.createObjectURL(finalBlob), width, height });
         }, mimeType, quality / 100);
       };
       img.onerror = reject;
@@ -193,7 +198,10 @@ export default function ImageCompressPage() {
                       <span className="text-xs text-slate-400 line-through">{formatSize(img.originalSize)}</span>
                       <span className="text-xs">→</span>
                       <span className="text-xs text-slate-600 font-medium">{formatSize(img.compressedSize)}</span>
-                      <span className="text-xs text-green-500 font-semibold">(-{pct}%)</span>
+                      {pct > 0
+                        ? <span className="text-xs text-green-500 font-semibold">(-{pct}%)</span>
+                        : <span className="text-xs text-slate-400 font-medium">{t.noSaving}</span>
+                      }
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 flex-shrink-0">
