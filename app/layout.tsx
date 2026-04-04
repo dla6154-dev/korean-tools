@@ -5,11 +5,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Korean Tools - 만 나이 계산기, 기념일 계산기",
+    default: "Korean Tools - 생활 계산기 모음",
     template: "%s | Korean Tools",
   },
-  description: "만 나이 계산기, 기념일 계산기 등 생활에 유용한 도구 모음",
-  keywords: ["만 나이 계산기", "기념일 계산기", "나이 계산", "디데이 계산"],
+  description: "만 나이, BMI, 대출 이자, 퇴직금, 음주측정, 디데이, 글자수, 이미지 압축 등 생활에 유용한 도구 모음",
+  keywords: ["만 나이 계산기", "기념일 계산기", "BMI 계산기", "대출 이자 계산기", "퇴직금 계산기", "음주측정 계산기", "디데이", "글자수 세기", "이미지 압축"],
   verification: {
     google: "MonEK12xkfiRwDS7Uxw6iCZaroYf1GHztTivnR7fDwQ",
   },
@@ -40,8 +40,14 @@ export default function RootLayout({
             <nav className="flex gap-4 text-sm font-medium text-slate-600 items-center">
               <Link href="/age" className="hover:text-blue-600 transition-colors">만 나이</Link>
               <Link href="/anniversary" className="hover:text-blue-600 transition-colors">기념일</Link>
+              <Link href="/dday" className="hover:text-blue-600 transition-colors">디데이</Link>
               <Link href="/characters" className="hover:text-blue-600 transition-colors">글자수</Link>
               <Link href="/bmi" className="hover:text-blue-600 transition-colors">BMI</Link>
+              <Link href="/loan" className="hover:text-blue-600 transition-colors">대출</Link>
+              <Link href="/alcohol" className="hover:text-blue-600 transition-colors">음주</Link>
+              <Link href="/severance" className="hover:text-blue-600 transition-colors">퇴직금</Link>
+              <Link href="/chosung" className="hover:text-blue-600 transition-colors">초성</Link>
+              <Link href="/image-compress" className="hover:text-blue-600 transition-colors">이미지</Link>
               <Link href="/en" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">EN</Link>
               <Link href="/" className="text-xs bg-slate-100 hover:bg-blue-100 hover:text-blue-600 px-2 py-1 rounded-full transition-colors">KO</Link>
             </nav>
