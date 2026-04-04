@@ -6,43 +6,36 @@ import { useLanguage } from "./language-context";
 export default function Nav() {
   const { lang, setLang } = useLanguage();
 
-  const links = lang === "ko"
-    ? [
-        { href: "/", label: "홈" },
-        { href: "/age", label: "만 나이" },
-        { href: "/anniversary", label: "기념일" },
-        { href: "/dday", label: "디데이" },
-        { href: "/characters", label: "글자수" },
-        { href: "/bmi", label: "BMI" },
-        { href: "/loan", label: "대출" },
-        { href: "/alcohol", label: "음주" },
-        { href: "/severance", label: "퇴직금" },
-        { href: "/chosung", label: "초성" },
-        { href: "/image-compress", label: "이미지" },
-      ]
-    : [
-        { href: "/", label: "Home" },
-        { href: "/age", label: "Age" },
-        { href: "/anniversary", label: "Anniversary" },
-        { href: "/dday", label: "D-Day" },
-        { href: "/characters", label: "Characters" },
-        { href: "/bmi", label: "BMI" },
-        { href: "/loan", label: "Loan" },
-        { href: "/alcohol", label: "Alcohol" },
-        { href: "/severance", label: "Severance" },
-        { href: "/chosung", label: "Chosung" },
-        { href: "/image-compress", label: "Image" },
-      ];
+  const links =
+    lang === "ko"
+      ? [
+          { href: "/", label: "홈" },
+          { href: "/stocks", label: "주식" },
+          { href: "/bitcoin", label: "비트코인" },
+          { href: "/social", label: "사회 정세" },
+          { href: "/age", label: "편리한 기능" },
+        ]
+      : [
+          { href: "/", label: "Home" },
+          { href: "/stocks", label: "Stocks" },
+          { href: "/bitcoin", label: "Bitcoin" },
+          { href: "/social", label: "Social News" },
+          { href: "/age", label: "Tools" },
+        ];
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-      <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         <Link href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700 flex-shrink-0">
           Korean Tools
         </Link>
-        <nav className="flex gap-3 text-sm font-medium text-slate-600 items-center overflow-x-auto">
+        <nav className="flex gap-4 text-sm font-medium text-slate-600 items-center overflow-x-auto">
           {links.map(({ href, label }) => (
-            <Link key={href} href={href} className="hover:text-blue-600 transition-colors whitespace-nowrap">
+            <Link
+              key={href}
+              href={href}
+              className="hover:text-blue-600 transition-colors whitespace-nowrap"
+            >
               {label}
             </Link>
           ))}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { LanguageProvider } from "./language-context";
 import Nav from "./nav";
+import Sidebar from "./sidebar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,12 +38,8 @@ export default function RootLayout({
           <Nav />
           <main className="flex-1">
             <div className="flex">
-              {/* 왼쪽 광고 영역 */}
-              <aside className="hidden xl:flex flex-col items-center pt-10 w-40 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)]">
-                <div className="w-36 h-[600px] bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center text-slate-400 text-xs text-center leading-relaxed">
-                  광고<br/>160×600
-                </div>
-              </aside>
+              {/* 왼쪽 사이드바 메뉴 */}
+              <Sidebar />
 
               {/* 페이지 콘텐츠 */}
               <div className="flex-1 min-w-0">
