@@ -36,7 +36,26 @@ export default function RootLayout({
         <LanguageProvider>
           <Nav />
           <main className="flex-1">
-            {children}
+            <div className="flex">
+              {/* 왼쪽 광고 영역 */}
+              <aside className="hidden xl:flex flex-col items-center pt-10 w-40 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)]">
+                <div className="w-36 h-[600px] bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center text-slate-400 text-xs text-center leading-relaxed">
+                  광고<br/>160×600
+                </div>
+              </aside>
+
+              {/* 페이지 콘텐츠 */}
+              <div className="flex-1 min-w-0">
+                {children}
+              </div>
+
+              {/* 오른쪽 광고 영역 */}
+              <aside className="hidden xl:flex flex-col items-center pt-10 w-40 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)]">
+                <div className="w-36 h-[600px] bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center text-slate-400 text-xs text-center leading-relaxed">
+                  광고<br/>160×600
+                </div>
+              </aside>
+            </div>
           </main>
           <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-400">
             © {new Date().getFullYear()} Korean Tools. 생활에 유용한 도구 모음.
