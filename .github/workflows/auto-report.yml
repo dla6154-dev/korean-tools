@@ -1,19 +1,19 @@
-name: 코인 시황 자동 생성
+name: 시황 자동 생성 (주식 + 코인)
 
 on:
   schedule:
-    # 매일 오전 9시 (KST) = UTC 00:00
+    # 매일 오전 9시 KST (UTC 00:00)
     - cron: "0 0 * * *"
-    # 매주 월요일 오전 9시 (KST) = UTC 00:00
+    # 매주 월요일 오전 9시 KST
     - cron: "0 0 * * 1"
-    # 매월 1일 오전 9시 (KST) = UTC 00:00
+    # 매월 1일 오전 9시 KST
     - cron: "0 0 1 * *"
 
-  # 수동 실행 (GitHub Actions 탭에서 직접 실행 가능)
+  # 수동 실행
   workflow_dispatch:
     inputs:
       period:
-        description: "생성 기간 (daily / weekly / monthly)"
+        description: "생성 기간"
         required: true
         default: "daily"
         type: choice
@@ -21,6 +21,15 @@ on:
           - daily
           - weekly
           - monthly
+      type:
+        description: "타입"
+        required: true
+        default: "both"
+        type: choice
+        options:
+          - both
+          - bitcoin
+          - stocks
 
 jobs:
   generate:
@@ -37,25 +46,33 @@ jobs:
 
       # 스케줄에 따라 기간 자동 결정
       - name: 기간 결정
-        id: period
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "PERIOD=${{ github.event.inputs.period }}" >> $GITHUB_ENV
+            echo "RUN_TYPE=${{ github.event.inputs.type }}" >> $GITHUB_ENV
           elif [ "$(date -u +%d)" = "01" ]; then
             echo "PERIOD=monthly" >> $GITHUB_ENV
+            echo "RUN_TYPE=both" >> $GITHUB_ENV
           elif [ "$(date -u +%u)" = "1" ]; then
             echo "PERIOD=weekly" >> $GITHUB_ENV
+            echo "RUN_TYPE=both" >> $GITHUB_ENV
           else
             echo "PERIOD=daily" >> $GITHUB_ENV
+            echo "RUN_TYPE=both" >> $GITHUB_ENV
           fi
 
-      - name: 코인 시황 데이터 수집 및 글 생성
-        run: node scripts/generate-report.js $PERIOD
+      - name: 코인 시황 생성
+        if: env.RUN_TYPE == 'both' || env.RUN_TYPE == 'bitcoin'
+        run: node scripts/generate-report.js $PERIOD bitcoin
+
+      - name: 주식 시황 생성
+        if: env.RUN_TYPE == 'both' || env.RUN_TYPE == 'stocks'
+        run: node scripts/generate-report.js $PERIOD stocks
 
       - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/data/bitcoin.json
-          git diff --staged --quiet || git commit -m "자동 업데이트: 코인 시황 $(date -u +%Y-%m-%d) ($PERIOD)"
+          git add app/data/bitcoin.json app/data/stocks.json
+          git diff --staged --quiet || git commit -m "자동 업데이트: 시황 $(date -u +%Y-%m-%d) ($PERIOD)"
           git push

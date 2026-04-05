@@ -1,4 +1,5 @@
 import bitcoinData from "./bitcoin.json";
+import stocksData from "./stocks.json";
 
 export type Article = {
   slug: string;
@@ -12,7 +13,7 @@ export type Article = {
 export type Category = "stocks" | "bitcoin" | "social";
 
 export const articles: Record<Category, Article[]> = {
-  stocks: [],
+  stocks: stocksData as Article[],
   social: [],
   bitcoin: bitcoinData as Article[],
 };
