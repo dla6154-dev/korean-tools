@@ -1,0 +1,61 @@
+name: 코인 시황 자동 생성
+
+on:
+  schedule:
+    # 매일 오전 9시 (KST) = UTC 00:00
+    - cron: "0 0 * * *"
+    # 매주 월요일 오전 9시 (KST) = UTC 00:00
+    - cron: "0 0 * * 1"
+    # 매월 1일 오전 9시 (KST) = UTC 00:00
+    - cron: "0 0 1 * *"
+
+  # 수동 실행 (GitHub Actions 탭에서 직접 실행 가능)
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "생성 기간 (daily / weekly / monthly)"
+        required: true
+        default: "daily"
+        type: choice
+        options:
+          - daily
+          - weekly
+          - monthly
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 스케줄에 따라 기간 자동 결정
+      - name: 기간 결정
+        id: period
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "PERIOD=${{ github.event.inputs.period }}" >> $GITHUB_ENV
+          elif [ "$(date -u +%d)" = "01" ]; then
+            echo "PERIOD=monthly" >> $GITHUB_ENV
+          elif [ "$(date -u +%u)" = "1" ]; then
+            echo "PERIOD=weekly" >> $GITHUB_ENV
+          else
+            echo "PERIOD=daily" >> $GITHUB_ENV
+          fi
+
+      - name: 코인 시황 데이터 수집 및 글 생성
+        run: node scripts/generate-report.js $PERIOD
+
+      - name: 변경사항 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app/data/bitcoin.json
+          git diff --staged --quiet || git commit -m "자동 업데이트: 코인 시황 $(date -u +%Y-%m-%d) ($PERIOD)"
+          git push
