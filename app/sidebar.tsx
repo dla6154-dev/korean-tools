@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const mainMenu = [
-  { href: "/stocks", label: "주식", icon: "📈" },
+  { href: "/stocks", label: "주식 (국내)", icon: "📈" },
+  { href: "/us-stocks", label: "주식 (미국)", icon: "🇺🇸" },
   { href: "/bitcoin", label: "비트코인", icon: "₿" },
   { href: "/social", label: "사회 정세", icon: "🌐" },
 ];

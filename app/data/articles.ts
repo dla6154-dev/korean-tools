@@ -1,6 +1,7 @@
 import bitcoinData from "./bitcoin.json";
 import stocksData from "./stocks.json";
 import socialData from "./social.json";
+import usStocksData from "./us-stocks.json";
 
 export type Article = {
   slug: string;
@@ -11,12 +12,13 @@ export type Article = {
   content: string;
 };
 
-export type Category = "stocks" | "bitcoin" | "social";
+export type Category = "stocks" | "bitcoin" | "social" | "us-stocks";
 
 export const articles: Record<Category, Article[]> = {
   stocks: stocksData as Article[],
   bitcoin: bitcoinData as Article[],
   social: socialData as Article[],
+  "us-stocks": usStocksData as Article[],
 };
 
 export function getArticle(category: Category, slug: string): Article | undefined {

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import bitcoinData from "./data/bitcoin.json";
-import stocksData  from "./data/stocks.json";
-import socialData  from "./data/social.json";
+import bitcoinData  from "./data/bitcoin.json";
+import stocksData   from "./data/stocks.json";
+import usStocksData from "./data/us-stocks.json";
+import socialData   from "./data/social.json";
 
 type Article = { slug: string; date?: string };
 
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths: MetadataRoute.Sitemap = [
     { url: "https://korean-tools.vercel.app", lastModified: new Date(), changeFrequency: "daily", priority: 1 },
     { url: "https://korean-tools.vercel.app/stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: "https://korean-tools.vercel.app/us-stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
     { url: "https://korean-tools.vercel.app/bitcoin", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
     { url: "https://korean-tools.vercel.app/social", lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: "https://korean-tools.vercel.app/age", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
@@ -41,8 +43,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticPaths,
-    ...articlePaths("stocks",  stocksData  as Article[], 0.85),
-    ...articlePaths("bitcoin", bitcoinData as Article[], 0.85),
-    ...articlePaths("social",  socialData  as Article[], 0.8),
+    ...articlePaths("stocks",    stocksData    as Article[], 0.85),
+    ...articlePaths("us-stocks", usStocksData  as Article[], 0.85),
+    ...articlePaths("bitcoin",   bitcoinData   as Article[], 0.85),
+    ...articlePaths("social",    socialData    as Article[], 0.8),
   ];
 }

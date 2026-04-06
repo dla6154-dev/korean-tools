@@ -10,14 +10,16 @@ export default function Nav() {
     lang === "ko"
       ? [
           { href: "/", label: "홈" },
-          { href: "/stocks", label: "주식" },
+          { href: "/stocks", label: "국내주식" },
+          { href: "/us-stocks", label: "미국주식" },
           { href: "/bitcoin", label: "비트코인" },
           { href: "/social", label: "사회 정세" },
           { href: "/age", label: "편리한 기능" },
         ]
       : [
           { href: "/", label: "Home" },
-          { href: "/stocks", label: "Stocks" },
+          { href: "/stocks", label: "KR Stocks" },
+          { href: "/us-stocks", label: "US Stocks" },
           { href: "/bitcoin", label: "Bitcoin" },
           { href: "/social", label: "Social News" },
           { href: "/age", label: "Tools" },

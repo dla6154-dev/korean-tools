@@ -11,12 +11,10 @@ const https = require("https");
 const { buildNarrative } = require("./content-agent");
 
 const PERIOD = process.argv[2] || "daily";
-const TYPE   = process.argv[3] || "bitcoin"; // "bitcoin" | "stocks"
+const TYPE   = process.argv[3] || "bitcoin"; // "bitcoin" | "stocks" | "us-stocks"
 
-const DATA_PATH = path.join(
-  __dirname,
-  `../app/data/${TYPE === "stocks" ? "stocks" : "bitcoin"}.json`
-);
+const DATA_FILE = TYPE === "stocks" ? "stocks" : TYPE === "us-stocks" ? "us-stocks" : "bitcoin";
+const DATA_PATH = path.join(__dirname, `../app/data/${DATA_FILE}.json`);
 
 // ─── 공통 유틸 ───────────────────────────────────────────────
 
@@ -52,7 +50,10 @@ function buildTable(rows, type, unit = "") {
     const sign = row.change >= 0 ? "+" : "";
     const pct  = `${sign}${row.change.toFixed(2)}%`;
     const bg   = i % 2 === 1 ? ' class="bg-slate-50"' : "";
-    const extra = unit ? `<td class="border border-slate-200 px-3 py-2 text-right">${row.price?.toLocaleString()}${unit}</td>` : "";
+    const priceStr = unit === "$"
+      ? `$${row.price?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      : `${row.price?.toLocaleString()}${unit}`;
+    const extra = unit ? `<td class="border border-slate-200 px-3 py-2 text-right">${priceStr}</td>` : "";
     return (
       `<tr${bg}>` +
       `<td class="border border-slate-200 px-3 py-2">${i + 1}</td>` +
@@ -175,12 +176,65 @@ ${buildTable(losers, "loser", "원")}
 `;
 }
 
+// ─── 미국 주식 (Yahoo Finance) ────────────────────────────────
+
+async function fetchUSStocksScreener(scrId) {
+  const url =
+    `https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved` +
+    `?formatted=false&lang=en-US&region=US&scrIds=${scrId}&count=25`;
+  const data = await fetchJSON(url, {
+    "Accept": "application/json",
+    "User-Agent": "Mozilla/5.0",
+  });
+  return data?.finance?.result?.[0]?.quotes || [];
+}
+
+async function fetchUSStocksData(period) {
+  console.log("Yahoo Finance API 호출 중 (NYSE·NASDAQ)...");
+
+  // 일간은 gainers/losers 사용, 주간/월간도 일간 기준 (무료 API 한계)
+  const [gainersRaw, losersRaw] = await Promise.all([
+    fetchUSStocksScreener("day_gainers"),
+    fetchUSStocksScreener("day_losers"),
+  ]);
+
+  const mapStock = (s) => ({
+    name:   s.shortName || s.longName || s.symbol,
+    symbol: s.symbol,
+    price:  s.regularMarketPrice ?? null,
+    change: s.regularMarketChangePercent ?? 0,
+  });
+
+  const gainers = gainersRaw.slice(0, 10).map(mapStock);
+  const losers  = losersRaw.slice(0, 10).map(mapStock);
+
+  if (!gainers.length) throw new Error("미국 주식 데이터 없음 — Yahoo Finance 응답 확인 필요");
+  console.log(`수집: 상승 ${gainers.length}개, 하락 ${losers.length}개`);
+  return { gainers, losers };
+}
+
+function buildUSStocksContent(period, date, gainers, losers) {
+  const label = { daily: "오늘", weekly: "이번 주", monthly: "이번 달" }[period];
+  return `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 ${label}의 상승 종목 Top 10 (NYSE·NASDAQ)</h2>
+${buildTable(gainers, "gainer", "$")}
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 ${label}의 하락 종목 Top 10 (NYSE·NASDAQ)</h2>
+${buildTable(losers, "loser", "$")}
+
+<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: Yahoo Finance (${date} 기준, NYSE·NASDAQ). 본 내용은 투자 권유가 아니며 투자 손실에 대한 책임은 투자자 본인에게 있습니다.</p>
+`;
+}
+
 // ─── 공통 메타 ────────────────────────────────────────────────
 
 function buildTitle(type, period, date) {
   const d = formatDate(date);
   if (type === "stocks") {
-    return { daily: `주식 시황 ${d} — 상승 Top 10 / 하락 Top 10`, weekly: `주식 주간 시황 ${d}`, monthly: `주식 월간 시황 ${d}` }[period];
+    return { daily: `국내 주식 시황 ${d} — 상승 Top 10 / 하락 Top 10`, weekly: `국내 주식 주간 시황 ${d}`, monthly: `국내 주식 월간 시황 ${d}` }[period];
+  }
+  if (type === "us-stocks") {
+    return { daily: `미국 주식 시황 ${d} — 상승 Top 10 / 하락 Top 10`, weekly: `미국 주식 주간 시황 ${d}`, monthly: `미국 주식 월간 시황 ${d}` }[period];
   }
   return { daily: `코인 시황 ${d} — 상승 Top 10 / 하락 Top 10`, weekly: `코인 주간 시황 ${d}`, monthly: `코인 월간 시황 ${d}` }[period];
 }
@@ -195,7 +249,8 @@ function buildSummary(type, gainers, losers) {
 
 async function main() {
   const date        = today();
-  const articleSlug = `${TYPE === "stocks" ? "stock" : "crypto"}-${PERIOD}-${date}`;
+  const slugPrefix  = TYPE === "stocks" ? "stock" : TYPE === "us-stocks" ? "us-stock" : "crypto";
+  const articleSlug = `${slugPrefix}-${PERIOD}-${date}`;
 
   console.log(`타입: ${TYPE} | 기간: ${PERIOD} | 날짜: ${date}`);
 
@@ -204,6 +259,9 @@ async function main() {
   if (TYPE === "stocks") {
     ({ gainers, losers } = await fetchStocksData(PERIOD));
     content = buildStocksContent(PERIOD, date, gainers, losers);
+  } else if (TYPE === "us-stocks") {
+    ({ gainers, losers } = await fetchUSStocksData(PERIOD));
+    content = buildUSStocksContent(PERIOD, date, gainers, losers);
   } else {
     ({ gainers, losers } = await fetchCryptoData(PERIOD));
     content = buildCryptoContent(PERIOD, date, gainers, losers);

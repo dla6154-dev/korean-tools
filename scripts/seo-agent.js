@@ -64,6 +64,7 @@ function updateSitemap(stats) {
   const staticPaths = [
     { url: BASE_URL,                priority: 1.0,  freq: "daily"   },
     { url: `${BASE_URL}/stocks`,    priority: 0.95, freq: "daily"   },
+    { url: `${BASE_URL}/us-stocks`, priority: 0.95, freq: "daily"   },
     { url: `${BASE_URL}/bitcoin`,   priority: 0.95, freq: "daily"   },
     { url: `${BASE_URL}/social`,    priority: 0.9,  freq: "daily"   },
     { url: `${BASE_URL}/age`,       priority: 0.8,  freq: "monthly" },
@@ -81,9 +82,10 @@ function updateSitemap(stats) {
   ];
 
   const newContent = `import type { MetadataRoute } from "next";
-import bitcoinData from "./data/bitcoin.json";
-import stocksData  from "./data/stocks.json";
-import socialData  from "./data/social.json";
+import bitcoinData  from "./data/bitcoin.json";
+import stocksData   from "./data/stocks.json";
+import usStocksData from "./data/us-stocks.json";
+import socialData   from "./data/social.json";
 
 type Article = { slug: string; date?: string };
 
@@ -110,9 +112,10 @@ ${staticPaths.map((p) =>
 
   return [
     ...staticPaths,
-    ...articlePaths("stocks",  stocksData  as Article[], 0.85),
-    ...articlePaths("bitcoin", bitcoinData as Article[], 0.85),
-    ...articlePaths("social",  socialData  as Article[], 0.8),
+    ...articlePaths("stocks",    stocksData    as Article[], 0.85),
+    ...articlePaths("us-stocks", usStocksData  as Article[], 0.85),
+    ...articlePaths("bitcoin",   bitcoinData   as Article[], 0.85),
+    ...articlePaths("social",    socialData    as Article[], 0.8),
   ];
 }
 `;
@@ -137,26 +140,29 @@ function writeReport(stats) {
 function main() {
   console.log("🔍 SEO 에이전트 실행\n");
 
-  const stocks  = readJSON("stocks.json");
-  const bitcoin = readJSON("bitcoin.json");
-  const social  = readJSON("social.json");
+  const stocks   = readJSON("stocks.json");
+  const usStocks = readJSON("us-stocks.json");
+  const bitcoin  = readJSON("bitcoin.json");
+  const social   = readJSON("social.json");
 
   console.log("── 콘텐츠 품질 검사");
   let totalIssues = 0;
-  totalIssues += checkQuality("stocks",  stocks);
-  totalIssues += checkQuality("bitcoin", bitcoin);
-  totalIssues += checkQuality("social",  social);
+  totalIssues += checkQuality("stocks",    stocks);
+  totalIssues += checkQuality("us-stocks", usStocks);
+  totalIssues += checkQuality("bitcoin",   bitcoin);
+  totalIssues += checkQuality("social",    social);
   if (!totalIssues) ok("품질 검사 이상 없음");
 
   console.log("\n── robots.txt");
   ensureRobots();
 
   const stats = {
-    stocks:  { count: stocks.length,  latestDate: stocks[0]?.date  || null },
-    bitcoin: { count: bitcoin.length, latestDate: bitcoin[0]?.date || null },
-    social:  { count: social.length,  latestDate: social[0]?.date  || null },
-    total:   stocks.length + bitcoin.length + social.length,
-    issues:  totalIssues,
+    stocks:    { count: stocks.length,   latestDate: stocks[0]?.date    || null },
+    usStocks:  { count: usStocks.length, latestDate: usStocks[0]?.date  || null },
+    bitcoin:   { count: bitcoin.length,  latestDate: bitcoin[0]?.date   || null },
+    social:    { count: social.length,   latestDate: social[0]?.date    || null },
+    total:     stocks.length + usStocks.length + bitcoin.length + social.length,
+    issues:    totalIssues,
   };
 
   console.log("\n── sitemap.ts 갱신");
@@ -166,7 +172,8 @@ function main() {
   writeReport(stats);
 
   console.log(`\n📈 요약`);
-  console.log(`   주식: ${stats.stocks.count}개 (최신: ${stats.stocks.latestDate || "없음"})`);
+  console.log(`   국내주식: ${stats.stocks.count}개 (최신: ${stats.stocks.latestDate || "없음"})`);
+  console.log(`   미국주식: ${stats.usStocks.count}개 (최신: ${stats.usStocks.latestDate || "없음"})`);
   console.log(`   코인: ${stats.bitcoin.count}개 (최신: ${stats.bitcoin.latestDate || "없음"})`);
   console.log(`   사회: ${stats.social.count}개 (최신: ${stats.social.latestDate || "없음"})`);
   console.log(`   총 이슈: ${totalIssues}개`);

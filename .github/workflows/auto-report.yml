@@ -30,6 +30,7 @@ on:
           - all
           - bitcoin
           - stocks
+          - us-stocks
           - news
           - seo
 
@@ -68,10 +69,16 @@ jobs:
         if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'bitcoin'
         run: node scripts/generate-report.js $PERIOD bitcoin
 
-      # ── 에이전트 1: 주식 시황 (콘텐츠 에이전트 포함) ─────────
-      - name: "[에이전트1] 주식 시황 생성"
+      # ── 에이전트 1: 국내 주식 시황 (콘텐츠 에이전트 포함) ───
+      - name: "[에이전트1] 국내 주식 시황 생성"
         if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'stocks'
         run: node scripts/generate-report.js $PERIOD stocks
+
+      # ── 에이전트 1: 미국 주식 시황 ──────────────────────────
+      - name: "[에이전트1] 미국 주식 시황 생성"
+        if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'us-stocks'
+        run: node scripts/generate-report.js $PERIOD us-stocks
+        continue-on-error: true  # Yahoo Finance 접근 실패 시 전체 중단 방지
 
       # ── 에이전트 2: 뉴스 수집 (사회 정세) ──────────────────
       - name: "[에이전트2] 사회 정세 뉴스 수집"
@@ -92,6 +99,7 @@ jobs:
           git add \
             app/data/bitcoin.json \
             app/data/stocks.json \
+            app/data/us-stocks.json \
             app/data/social.json \
             app/data/seo-report.json \
             app/sitemap.ts \
