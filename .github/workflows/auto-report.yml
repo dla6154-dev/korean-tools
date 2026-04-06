@@ -1,4 +1,4 @@
-name: 시황 자동 생성 (주식 + 코인)
+name: 에이전트 자동 실행 (주식 + 코인 + 뉴스 + SEO)
 
 on:
   schedule:
@@ -22,17 +22,19 @@ on:
           - weekly
           - monthly
       type:
-        description: "타입"
+        description: "실행 타입"
         required: true
-        default: "both"
+        default: "all"
         type: choice
         options:
-          - both
+          - all
           - bitcoin
           - stocks
+          - news
+          - seo
 
 jobs:
-  generate:
+  run-agents:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,35 +46,55 @@ jobs:
         with:
           node-version: "20"
 
-      # 스케줄에 따라 기간 자동 결정
+      # ── 기간 자동 결정 ──────────────────────────────────────
       - name: 기간 결정
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "PERIOD=${{ github.event.inputs.period }}" >> $GITHUB_ENV
-            echo "RUN_TYPE=${{ github.event.inputs.type }}" >> $GITHUB_ENV
+            echo "RUN_TYPE=${{ github.event.inputs.type }}"  >> $GITHUB_ENV
           elif [ "$(date -u +%d)" = "01" ]; then
             echo "PERIOD=monthly" >> $GITHUB_ENV
-            echo "RUN_TYPE=both" >> $GITHUB_ENV
+            echo "RUN_TYPE=all"   >> $GITHUB_ENV
           elif [ "$(date -u +%u)" = "1" ]; then
-            echo "PERIOD=weekly" >> $GITHUB_ENV
-            echo "RUN_TYPE=both" >> $GITHUB_ENV
+            echo "PERIOD=weekly"  >> $GITHUB_ENV
+            echo "RUN_TYPE=all"   >> $GITHUB_ENV
           else
-            echo "PERIOD=daily" >> $GITHUB_ENV
-            echo "RUN_TYPE=both" >> $GITHUB_ENV
+            echo "PERIOD=daily"   >> $GITHUB_ENV
+            echo "RUN_TYPE=all"   >> $GITHUB_ENV
           fi
 
-      - name: 코인 시황 생성
-        if: env.RUN_TYPE == 'both' || env.RUN_TYPE == 'bitcoin'
+      # ── 에이전트 1: 코인 시황 (콘텐츠 에이전트 포함) ─────────
+      - name: "[에이전트1] 코인 시황 생성"
+        if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'bitcoin'
         run: node scripts/generate-report.js $PERIOD bitcoin
 
-      - name: 주식 시황 생성
-        if: env.RUN_TYPE == 'both' || env.RUN_TYPE == 'stocks'
+      # ── 에이전트 1: 주식 시황 (콘텐츠 에이전트 포함) ─────────
+      - name: "[에이전트1] 주식 시황 생성"
+        if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'stocks'
         run: node scripts/generate-report.js $PERIOD stocks
 
+      # ── 에이전트 2: 뉴스 수집 (사회 정세) ──────────────────
+      - name: "[에이전트2] 사회 정세 뉴스 수집"
+        if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'news'
+        run: node scripts/news-agent.js $PERIOD
+        continue-on-error: true  # 뉴스 API 실패 시 전체 중단 방지
+
+      # ── 에이전트 4: SEO 최적화 (sitemap 갱신 + 품질 검사) ───
+      - name: "[에이전트4] SEO 최적화"
+        if: env.RUN_TYPE == 'all' || env.RUN_TYPE == 'seo'
+        run: node scripts/seo-agent.js
+
+      # ── 변경사항 커밋 & 푸시 ──────────────────────────────
       - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/data/bitcoin.json app/data/stocks.json
-          git diff --staged --quiet || git commit -m "자동 업데이트: 시황 $(date -u +%Y-%m-%d) ($PERIOD)"
+          git add \
+            app/data/bitcoin.json \
+            app/data/stocks.json \
+            app/data/social.json \
+            app/data/seo-report.json \
+            app/sitemap.ts \
+            public/robots.txt || true
+          git diff --staged --quiet || git commit -m "자동 업데이트: 에이전트 실행 $(date -u +%Y-%m-%d) ($PERIOD)"
           git push

@@ -5,9 +5,10 @@
  *       node scripts/generate-report.js daily stocks
  */
 
-const fs = require("fs");
+const fs   = require("fs");
 const path = require("path");
 const https = require("https");
+const { buildNarrative } = require("./content-agent");
 
 const PERIOD = process.argv[2] || "daily";
 const TYPE   = process.argv[3] || "bitcoin"; // "bitcoin" | "stocks"
@@ -211,13 +212,17 @@ async function main() {
   console.log(`상승 1위: ${gainers[0].name} +${gainers[0].change.toFixed(1)}%`);
   console.log(`하락 1위: ${losers[0].name} ${losers[0].change.toFixed(1)}%`);
 
+  // 콘텐츠 에이전트: narrative 분석 텍스트 추가
+  const narrative = buildNarrative(TYPE, PERIOD, gainers, losers);
+  const richContent = content + narrative;
+
   const newArticle = {
     slug:    articleSlug,
     title:   buildTitle(TYPE, PERIOD, date),
     date,
     period:  PERIOD,
     summary: buildSummary(TYPE, gainers, losers),
-    content,
+    content: richContent,
   };
 
   // 기존 데이터 로드

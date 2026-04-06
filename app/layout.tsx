@@ -3,6 +3,7 @@ import Script from "next/script";
 import { LanguageProvider } from "./language-context";
 import Nav from "./nav";
 import Sidebar from "./sidebar";
+import AdOptimizer from "./components/ad-optimizer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -46,11 +47,9 @@ export default function RootLayout({
                 {children}
               </div>
 
-              {/* 오른쪽 광고 영역 */}
-              <aside className="hidden xl:flex flex-col items-center pt-10 w-40 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)]">
-                <div className="w-36 h-[600px] bg-slate-100 border border-dashed border-slate-300 rounded-xl flex items-center justify-center text-slate-400 text-xs text-center leading-relaxed">
-                  광고<br/>160×600
-                </div>
+              {/* 오른쪽 광고 영역 — 광고 최적화 에이전트 */}
+              <aside className="hidden xl:flex flex-col items-center pt-10 w-44 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)]">
+                <AdOptimizer slot="sidebar-right" width={160} height={600} />
               </aside>
             </div>
           </main>
