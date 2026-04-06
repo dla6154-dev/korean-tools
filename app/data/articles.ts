@@ -6,10 +6,13 @@ import usStocksData from "./us-stocks.json";
 export type Article = {
   slug: string;
   title: string;
+  titleEn?: string;
   date: string;
   period?: "daily" | "weekly" | "monthly";
   summary: string;
+  summaryEn?: string;
   content: string;
+  contentEn?: string;
 };
 
 export type Category = "stocks" | "bitcoin" | "social" | "us-stocks";

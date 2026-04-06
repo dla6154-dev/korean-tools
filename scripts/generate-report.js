@@ -8,7 +8,7 @@
 const fs   = require("fs");
 const path = require("path");
 const https = require("https");
-const { buildNarrative } = require("./content-agent");
+// content-agent는 메인 함수 내에서 동적으로 require (buildNarrative, buildNarrativeEn)
 
 const PERIOD = process.argv[2] || "daily";
 const TYPE   = process.argv[3] || "bitcoin"; // "bitcoin" | "stocks" | "us-stocks"
@@ -85,6 +85,51 @@ function buildTable(rows, type, unit = "") {
 </div>`;
 }
 
+function buildTableEn(rows, type, unit = "") {
+  const isGainer = type === "gainer";
+  const color    = isGainer ? "green" : "red";
+  const hBg      = isGainer ? "bg-green-50" : "bg-red-50";
+  const hColor   = isGainer ? "text-green-700" : "text-red-700";
+
+  const trs = rows.map((row, i) => {
+    const sign = row.change >= 0 ? "+" : "";
+    const pct  = `${sign}${row.change.toFixed(2)}%`;
+    const bg   = i % 2 === 1 ? ' class="bg-slate-50"' : "";
+    const priceStr = unit === "$"
+      ? `$${row.price?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      : unit ? `${row.price?.toLocaleString()}${unit}` : "";
+    const extra = unit ? `<td class="border border-slate-200 px-3 py-2 text-right">${priceStr}</td>` : "";
+    return (
+      `<tr${bg}>` +
+      `<td class="border border-slate-200 px-3 py-2">${i + 1}</td>` +
+      `<td class="border border-slate-200 px-3 py-2">${row.name}</td>` +
+      `<td class="border border-slate-200 px-3 py-2 font-mono text-xs">${row.symbol}</td>` +
+      extra +
+      `<td class="border border-slate-200 px-3 py-2 text-right font-semibold text-${color}-600">${pct}</td>` +
+      `</tr>`
+    );
+  }).join("\n      ");
+
+  const priceHeader = unit ? `<th class="border border-slate-200 px-3 py-2 text-right">Price</th>` : "";
+
+  return `<div class="overflow-x-auto mb-8">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="${hBg}">
+        <th class="border border-slate-200 px-3 py-2 text-left">Rank</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">Name</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">Symbol</th>
+        ${priceHeader}
+        <th class="border border-slate-200 px-3 py-2 text-right ${hColor}">Change</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${trs}
+    </tbody>
+  </table>
+</div>`;
+}
+
 // ─── 비트코인 (CoinGecko) ─────────────────────────────────────
 
 function getPriceChangeField(period) {
@@ -131,6 +176,19 @@ ${buildTable(losers, "loser")}
 `;
 }
 
+function buildCryptoContentEn(period, date, gainers, losers) {
+  const label = { daily: "Today's", weekly: "This Week's", monthly: "This Month's" }[period];
+  return `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 ${label} Top 10 Gainers</h2>
+${buildTableEn(gainers, "gainer")}
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 ${label} Top 10 Losers</h2>
+${buildTableEn(losers, "loser")}
+
+<p class="text-xs text-slate-400 mt-8">※ Data source: CoinGecko (as of ${date}, top 250 by market cap). This is not investment advice. Investors bear full responsibility for their own decisions.</p>
+`;
+}
+
 // ─── 주식 (Naver Finance) ─────────────────────────────────────
 
 async function fetchStocksPage(sosok, page) {
@@ -173,6 +231,19 @@ ${buildTable(gainers, "gainer", "원")}
 ${buildTable(losers, "loser", "원")}
 
 <p class="text-xs text-slate-400 mt-8">※ 데이터 출처: 네이버 금융 (${date} 기준, KOSPI·KOSDAQ 상위 400개 기준). 본 내용은 투자 권유가 아니며 투자 손실에 대한 책임은 투자자 본인에게 있습니다.</p>
+`;
+}
+
+function buildStocksContentEn(period, date, gainers, losers) {
+  const label = { daily: "Today's", weekly: "This Week's", monthly: "This Month's" }[period];
+  return `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 ${label} Top 10 Gainers (KOSPI·KOSDAQ)</h2>
+${buildTableEn(gainers, "gainer", "₩")}
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 ${label} Top 10 Losers (KOSPI·KOSDAQ)</h2>
+${buildTableEn(losers, "loser", "₩")}
+
+<p class="text-xs text-slate-400 mt-8">※ Data source: Naver Finance (as of ${date}, top 400 KOSPI·KOSDAQ). This is not investment advice. Investors bear full responsibility for their own decisions.</p>
 `;
 }
 
@@ -226,6 +297,19 @@ ${buildTable(losers, "loser", "$")}
 `;
 }
 
+function buildUSStocksContentEn(period, date, gainers, losers) {
+  const label = { daily: "Today's", weekly: "This Week's", monthly: "This Month's" }[period];
+  return `
+<h2 class="text-xl font-bold mb-3 mt-6">📈 ${label} Top 10 Gainers (NYSE·NASDAQ)</h2>
+${buildTableEn(gainers, "gainer", "$")}
+
+<h2 class="text-xl font-bold mb-3 mt-6">📉 ${label} Top 10 Losers (NYSE·NASDAQ)</h2>
+${buildTableEn(losers, "loser", "$")}
+
+<p class="text-xs text-slate-400 mt-8">※ Data source: Yahoo Finance (as of ${date}, NYSE·NASDAQ). This is not investment advice. Investors bear full responsibility for their own decisions.</p>
+`;
+}
+
 // ─── 공통 메타 ────────────────────────────────────────────────
 
 function buildTitle(type, period, date) {
@@ -239,10 +323,27 @@ function buildTitle(type, period, date) {
   return { daily: `코인 시황 ${d} — 상승 Top 10 / 하락 Top 10`, weekly: `코인 주간 시황 ${d}`, monthly: `코인 월간 시황 ${d}` }[period];
 }
 
+function buildTitleEn(type, period, date) {
+  const d = formatDate(date);
+  if (type === "stocks") {
+    return { daily: `KR Stock Market ${d} — Top 10 Gainers / Losers`, weekly: `KR Stock Weekly Report ${d}`, monthly: `KR Stock Monthly Report ${d}` }[period];
+  }
+  if (type === "us-stocks") {
+    return { daily: `US Stock Market ${d} — Top 10 Gainers / Losers`, weekly: `US Stock Weekly Report ${d}`, monthly: `US Stock Monthly Report ${d}` }[period];
+  }
+  return { daily: `Crypto Market ${d} — Top 10 Gainers / Losers`, weekly: `Crypto Weekly Report ${d}`, monthly: `Crypto Monthly Report ${d}` }[period];
+}
+
 function buildSummary(type, gainers, losers) {
   const t3g = gainers.slice(0, 3).map((c) => `${c.name} +${c.change.toFixed(1)}%`).join(", ");
   const t3l = losers.slice(0, 3).map((c) => `${c.name} ${c.change.toFixed(1)}%`).join(", ");
   return `상승: ${t3g} / 하락: ${t3l}`;
+}
+
+function buildSummaryEn(type, gainers, losers) {
+  const t3g = gainers.slice(0, 3).map((c) => `${c.name} +${c.change.toFixed(1)}%`).join(", ");
+  const t3l = losers.slice(0, 3).map((c) => `${c.name} ${c.change.toFixed(1)}%`).join(", ");
+  return `Gainers: ${t3g} / Losers: ${t3l}`;
 }
 
 // ─── 메인 ─────────────────────────────────────────────────────
@@ -255,32 +356,40 @@ async function main() {
   console.log(`타입: ${TYPE} | 기간: ${PERIOD} | 날짜: ${date}`);
 
   // 데이터 수집
-  let gainers, losers, content;
+  let gainers, losers, content, contentEn;
   if (TYPE === "stocks") {
     ({ gainers, losers } = await fetchStocksData(PERIOD));
-    content = buildStocksContent(PERIOD, date, gainers, losers);
+    content   = buildStocksContent(PERIOD, date, gainers, losers);
+    contentEn = buildStocksContentEn(PERIOD, date, gainers, losers);
   } else if (TYPE === "us-stocks") {
     ({ gainers, losers } = await fetchUSStocksData(PERIOD));
-    content = buildUSStocksContent(PERIOD, date, gainers, losers);
+    content   = buildUSStocksContent(PERIOD, date, gainers, losers);
+    contentEn = buildUSStocksContentEn(PERIOD, date, gainers, losers);
   } else {
     ({ gainers, losers } = await fetchCryptoData(PERIOD));
-    content = buildCryptoContent(PERIOD, date, gainers, losers);
+    content   = buildCryptoContent(PERIOD, date, gainers, losers);
+    contentEn = buildCryptoContentEn(PERIOD, date, gainers, losers);
   }
 
   console.log(`상승 1위: ${gainers[0].name} +${gainers[0].change.toFixed(1)}%`);
   console.log(`하락 1위: ${losers[0].name} ${losers[0].change.toFixed(1)}%`);
 
-  // 콘텐츠 에이전트: narrative 분석 텍스트 추가
-  const narrative = buildNarrative(TYPE, PERIOD, gainers, losers);
-  const richContent = content + narrative;
+  // 콘텐츠 에이전트: narrative 분석 텍스트 추가 (한/영)
+  const { buildNarrative: buildNarrativeKo, buildNarrativeEn } = require("./content-agent");
+  // (require는 캐시되므로 반복 호출 무방)
+  const richContent   = content   + buildNarrativeKo(TYPE, PERIOD, gainers, losers);
+  const richContentEn = contentEn + buildNarrativeEn(TYPE, PERIOD, gainers, losers);
 
   const newArticle = {
-    slug:    articleSlug,
-    title:   buildTitle(TYPE, PERIOD, date),
+    slug:      articleSlug,
+    title:     buildTitle(TYPE, PERIOD, date),
+    titleEn:   buildTitleEn(TYPE, PERIOD, date),
     date,
-    period:  PERIOD,
-    summary: buildSummary(TYPE, gainers, losers),
-    content: richContent,
+    period:    PERIOD,
+    summary:   buildSummary(TYPE, gainers, losers),
+    summaryEn: buildSummaryEn(TYPE, gainers, losers),
+    content:   richContent,
+    contentEn: richContentEn,
   };
 
   // 기존 데이터 로드

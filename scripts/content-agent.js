@@ -107,13 +107,92 @@ function buildCryptoNarrative(period, gainers, losers) {
 </div>`;
 }
 
+// ─── 영어 narrative ────────────────────────────────────────────
+function buildStocksNarrativeEn(period, gainers, losers) {
+  const topG  = gainers[0];
+  const topL  = losers[0];
+  const avgG  = avgChange(gainers).toFixed(1);
+  const avgL  = avgChange(losers).toFixed(1);
+
+  const sectorMap = {};
+  gainers.forEach((s) => {
+    const sec = detectSector(s.name) || "Other";
+    sectorMap[sec] = (sectorMap[sec] || 0) + 1;
+  });
+  const topSector = Object.entries(sectorMap).sort((a, b) => b[1] - a[1])[0];
+
+  const periodLabel = { daily: "Today", weekly: "This Week", monthly: "This Month" }[period] || period;
+  const g3 = gainers.slice(0, 3).map((s) => `<strong>${s.name}</strong>(+${s.change.toFixed(1)}%)`).join(", ");
+  const l3 = losers.slice(0, 3).map((s) => `<strong>${s.name}</strong>(${s.change.toFixed(1)}%)`).join(", ");
+
+  return `
+<h2 class="text-xl font-bold mb-3 mt-8">📊 ${periodLabel}'s Market Analysis</h2>
+<div class="bg-slate-50 rounded-lg p-4 mb-6 text-sm text-slate-700 leading-relaxed space-y-3">
+  <p>
+    Based on analysis of the top 400 KOSPI·KOSDAQ stocks,
+    the average gain of the Top 10 risers was <span class="font-semibold text-green-700">+${avgG}%</span>,
+    while the average decline of the Top 10 fallers was <span class="font-semibold text-red-700">${avgL}%</span>.
+  </p>
+  <p>
+    📈 <span class="font-semibold">Top Gainers:</span> ${g3} led the market with strong momentum.
+    ${topSector ? `Notably, <strong>${topSector[0]}</strong> sector stocks dominated with ${topSector[1]} entries.` : ""}
+  </p>
+  <p>
+    📉 <span class="font-semibold">Top Losers:</span> ${l3} closed lower, requiring investor attention.
+  </p>
+  <p class="text-xs text-slate-500 pt-1 border-t border-slate-200">
+    ※ This analysis is auto-generated from market data and is not investment advice.
+  </p>
+</div>`;
+}
+
+function buildCryptoNarrativeEn(period, gainers, losers) {
+  const topG  = gainers[0];
+  const topL  = losers[0];
+  const avgG  = avgChange(gainers).toFixed(1);
+  const avgL  = avgChange(losers).toFixed(1);
+
+  const periodLabel = { daily: "Today", weekly: "This Week", monthly: "This Month" }[period] || period;
+  const g3 = gainers.slice(0, 3).map((c) => `<strong>${c.name}</strong>(+${c.change.toFixed(1)}%)`).join(", ");
+  const l3 = losers.slice(0, 3).map((c) => `<strong>${c.name}</strong>(${c.change.toFixed(1)}%)`).join(", ");
+
+  const bullBear = parseFloat(avgG) > Math.abs(parseFloat(avgL)) ? "Bullish" : "Bearish";
+
+  return `
+<h2 class="text-xl font-bold mb-3 mt-8">📊 ${periodLabel}'s Crypto Market Analysis</h2>
+<div class="bg-slate-50 rounded-lg p-4 mb-6 text-sm text-slate-700 leading-relaxed space-y-3">
+  <p>
+    Analyzing the top 250 coins by market cap, the crypto market showed a
+    <span class="font-semibold ${parseFloat(avgG) > 5 ? "text-green-700" : "text-red-700"}">${bullBear}</span>
+    sentiment today. Top 10 gainers averaged <span class="font-semibold text-green-700">+${avgG}%</span>,
+    while top 10 losers averaged <span class="font-semibold text-red-700">${avgL}%</span>.
+  </p>
+  <p>
+    🚀 <span class="font-semibold">Top Gainers:</span> ${g3} surged significantly, drawing investor attention.
+    <strong>${topG.name} (${topG.symbol})</strong> led with +${topG.change.toFixed(2)}%.
+  </p>
+  <p>
+    ⚠️ <span class="font-semibold">Top Losers:</span> ${l3} saw significant declines.
+    <strong>${topL.name} (${topL.symbol})</strong> fell the most at ${topL.change.toFixed(2)}%.
+  </p>
+  <p class="text-xs text-slate-500 pt-1 border-t border-slate-200">
+    ※ Crypto markets are highly volatile. This is not investment advice. Invest at your own risk.
+  </p>
+</div>`;
+}
+
 // ─── 공개 API ─────────────────────────────────────────────────
 function buildNarrative(type, period, gainers, losers) {
-  if (type === "stocks") return buildStocksNarrative(period, gainers, losers);
+  if (type === "stocks" || type === "us-stocks") return buildStocksNarrative(period, gainers, losers);
   return buildCryptoNarrative(period, gainers, losers);
 }
 
-module.exports = { buildNarrative };
+function buildNarrativeEn(type, period, gainers, losers) {
+  if (type === "stocks" || type === "us-stocks") return buildStocksNarrativeEn(period, gainers, losers);
+  return buildCryptoNarrativeEn(period, gainers, losers);
+}
+
+module.exports = { buildNarrative, buildNarrativeEn };
 
 // ─── 단독 실행 모드 ───────────────────────────────────────────
 if (require.main === module) {

@@ -99,25 +99,38 @@ const CATEGORIES = [
   { key: "world",    icon: "🌍", label: "국제",  query: "국제 뉴스 한국" },
 ];
 
-async function fetchCategory(cat) {
-  const url =
+const CATEGORIES_EN = [
+  { key: "politics", icon: "🏛", label: "Politics", query: "Korea politics news English" },
+  { key: "economy",  icon: "💰", label: "Economy",  query: "Korea economy news English" },
+  { key: "society",  icon: "📰", label: "Society",  query: "Korea society news English" },
+  { key: "world",    icon: "🌍", label: "World",    query: "Korea international news English" },
+];
+
+async function fetchCategory(cat, lang = "ko") {
+  const hl   = lang === "en" ? "en" : "ko";
+  const gl   = "KR";
+  const ceid = lang === "en" ? "KR:en" : "KR:ko";
+  const url  =
     `https://news.google.com/rss/search?q=${encodeURIComponent(cat.query)}` +
-    `&hl=ko&gl=KR&ceid=KR:ko`;
-  console.log(`[${cat.label}] 수집 중...`);
+    `&hl=${hl}&gl=${gl}&ceid=${ceid}`;
+  console.log(`[${cat.label}/${lang}] 수집 중...`);
   try {
     const xml   = await fetchURL(url);
     const items = parseRSS(xml, 5);
-    console.log(`[${cat.label}] ${items.length}개`);
+    console.log(`[${cat.label}/${lang}] ${items.length}개`);
     return items;
   } catch (e) {
-    console.warn(`[${cat.label}] 실패: ${e.message}`);
+    console.warn(`[${cat.label}/${lang}] 실패: ${e.message}`);
     return [];
   }
 }
 
 // ─── HTML 빌더 ────────────────────────────────────────────────
-function buildSection(cat, items) {
+function buildSection(cat, items, lang = "ko") {
   if (!items.length) return "";
+
+  const headlineLabel = lang === "en" ? "Headline" : "헤드라인";
+  const sectionLabel  = lang === "en" ? `${cat.icon} ${cat.label} Top News` : `${cat.icon} ${cat.label} 주요 뉴스`;
 
   const rows = items
     .map((item, i) => {
@@ -134,13 +147,13 @@ function buildSection(cat, items) {
     .join("\n      ");
 
   return `
-<h2 class="text-xl font-bold mb-3 mt-6">${cat.icon} ${cat.label} 주요 뉴스</h2>
+<h2 class="text-xl font-bold mb-3 mt-6">${sectionLabel}</h2>
 <div class="overflow-x-auto mb-8">
   <table class="w-full text-sm border-collapse">
     <thead>
       <tr class="bg-slate-100">
         <th class="border border-slate-200 px-3 py-2 text-center w-8">#</th>
-        <th class="border border-slate-200 px-3 py-2 text-left">헤드라인</th>
+        <th class="border border-slate-200 px-3 py-2 text-left">${headlineLabel}</th>
       </tr>
     </thead>
     <tbody>
@@ -159,19 +172,24 @@ async function main() {
 
   console.log(`사회 정세 뉴스 수집 | 기간: ${PERIOD} | 날짜: ${date}`);
 
-  const results = await Promise.all(CATEGORIES.map(fetchCategory));
+  // 한국어 + 영어 병렬 수집
+  const [resultsKo, resultsEn] = await Promise.all([
+    Promise.all(CATEGORIES.map((cat) => fetchCategory(cat, "ko"))),
+    Promise.all(CATEGORIES_EN.map((cat) => fetchCategory(cat, "en"))),
+  ]);
 
   let content = "";
-  CATEGORIES.forEach((cat, i) => { content += buildSection(cat, results[i]); });
+  CATEGORIES.forEach((cat, i) => { content += buildSection(cat, resultsKo[i], "ko"); });
 
-  const totalItems  = results.reduce((s, r) => s + r.length, 0);
-  const topHeadlines = results
-    .flat()
-    .slice(0, 2)
-    .map((i) => i.title.substring(0, 20))
-    .join(", ");
+  let contentEn = "";
+  CATEGORIES_EN.forEach((cat, i) => { contentEn += buildSection(cat, resultsEn[i], "en"); });
 
-  content += `\n<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: Google News (${date} 기준). 본 내용은 정보 제공 목적이며 특정 의견을 대변하지 않습니다.</p>`;
+  const totalItems = resultsKo.reduce((s, r) => s + r.length, 0);
+  const topHeadlines   = resultsKo.flat().slice(0, 2).map((i) => i.title.substring(0, 20)).join(", ");
+  const topHeadlinesEn = resultsEn.flat().slice(0, 2).map((i) => i.title.substring(0, 25)).join(", ");
+
+  content   += `\n<p class="text-xs text-slate-400 mt-8">※ 데이터 출처: Google News (${date} 기준). 본 내용은 정보 제공 목적이며 특정 의견을 대변하지 않습니다.</p>`;
+  contentEn += `\n<p class="text-xs text-slate-400 mt-8">※ Data source: Google News (as of ${date}). For informational purposes only and does not represent any particular viewpoint.</p>`;
 
   if (!totalItems) {
     console.error("❌ 수집된 뉴스 없음 — 저장 건너뜀");
@@ -180,11 +198,14 @@ async function main() {
 
   const newArticle = {
     slug,
-    title:   `사회 정세 ${fmtDate} — 정치·경제·사회·국제 주요 뉴스`,
+    title:     `사회 정세 ${fmtDate} — 정치·경제·사회·국제 주요 뉴스`,
+    titleEn:   `Social News ${fmtDate} — Politics, Economy, Society & World`,
     date,
-    period:  PERIOD,
-    summary: topHeadlines || `${label}의 국내외 주요 뉴스 ${totalItems}건`,
+    period:    PERIOD,
+    summary:   topHeadlines   || `${label}의 국내외 주요 뉴스 ${totalItems}건`,
+    summaryEn: topHeadlinesEn || `Top ${totalItems} Korean & global headlines`,
     content,
+    contentEn,
   };
 
   let existing = [];
