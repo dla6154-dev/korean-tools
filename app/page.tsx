@@ -199,10 +199,6 @@ export default function Home() {
         <p className="text-slate-500 text-sm mt-1">{t.sub}</p>
       </div>
 
-      <div className="bg-slate-100 border border-dashed border-slate-300 rounded-xl h-16 flex items-center justify-center text-slate-400 text-sm">
-        {t.adZone}
-      </div>
-
       {/* 기념일 계산기 */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
         <h2 className="text-lg font-bold text-slate-800 mb-4">{t.annivTitle}</h2>
@@ -338,9 +334,6 @@ export default function Home() {
         )}
       </div>
 
-      <div className="bg-slate-100 border border-dashed border-slate-300 rounded-xl h-16 flex items-center justify-center text-slate-400 text-sm">
-        {t.adZone}
-      </div>
     </div>
   );
 }
