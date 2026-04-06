@@ -7,7 +7,7 @@
 const fs   = require("fs");
 const path = require("path");
 
-const BASE_URL   = "https://korean-tools.vercel.app";
+const BASE_URL   = "https://rate-snap.com";
 const ROOT       = path.join(__dirname, "..");
 const DATA_DIR   = path.join(ROOT, "app/data");
 const PUBLIC_DIR = path.join(ROOT, "public");

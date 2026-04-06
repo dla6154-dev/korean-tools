@@ -7,26 +7,26 @@ import socialData   from "./data/social.json";
 type Article = { slug: string; date?: string };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://korean-tools.vercel.app";
+  const baseUrl = "https://rate-snap.com";
 
   const staticPaths: MetadataRoute.Sitemap = [
-    { url: "https://korean-tools.vercel.app", lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: "https://korean-tools.vercel.app/stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: "https://korean-tools.vercel.app/us-stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: "https://korean-tools.vercel.app/bitcoin", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
-    { url: "https://korean-tools.vercel.app/social", lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    { url: "https://korean-tools.vercel.app/age", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/anniversary", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/dday", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/bmi", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/characters", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/loan", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: "https://korean-tools.vercel.app/severance", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
-    { url: "https://korean-tools.vercel.app/alcohol", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
-    { url: "https://korean-tools.vercel.app/chosung", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
-    { url: "https://korean-tools.vercel.app/keyboard", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
-    { url: "https://korean-tools.vercel.app/image-compress", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
-    { url: "https://korean-tools.vercel.app/en", lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: "https://rate-snap.com", lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    { url: "https://rate-snap.com/stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: "https://rate-snap.com/us-stocks", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: "https://rate-snap.com/bitcoin", lastModified: new Date(), changeFrequency: "daily", priority: 0.95 },
+    { url: "https://rate-snap.com/social", lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: "https://rate-snap.com/age", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/anniversary", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/dday", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/bmi", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/characters", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/loan", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://rate-snap.com/severance", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://rate-snap.com/alcohol", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://rate-snap.com/chosung", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://rate-snap.com/keyboard", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://rate-snap.com/image-compress", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://rate-snap.com/en", lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
   ];
 
   const articlePaths = (

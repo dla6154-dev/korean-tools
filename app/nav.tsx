@@ -29,7 +29,7 @@ export default function Nav() {
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         <Link href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700 flex-shrink-0">
-          Korean Tools
+          RateSnap
         </Link>
         <nav className="flex gap-4 text-sm font-medium text-slate-600 items-center overflow-x-auto">
           {links.map(({ href, label }) => (
