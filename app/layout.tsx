@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import Footer from "./footer";
 import { LanguageProvider } from "./language-context";
 import Nav from "./nav";
-import Sidebar from "./sidebar";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "RateSnap - Stock & Crypto Market Snapshot",
+    default: "RateSnap - 생활 계산기 모음",
     template: "%s | RateSnap",
   },
-  description: "Daily top 10 gainers & losers for KR stocks, US stocks, and crypto. Plus life tools: age, BMI, loan calculator and more.",
-  keywords: ["stock market", "crypto", "KOSPI", "KOSDAQ", "NYSE", "NASDAQ", "Bitcoin", "top gainers", "top losers", "rate snap"],
+  description:
+    "만 나이, BMI, 대출 이자, 퇴직금, 기념일, 디데이, 음주측정, 이미지 압축 등 생활에 유용한 무료 계산기 모음",
+  keywords: [
+    "만 나이 계산기",
+    "BMI 계산기",
+    "대출 이자 계산기",
+    "퇴직금 계산기",
+    "기념일 계산기",
+    "디데이 계산기",
+    "이미지 압축",
+    "글자수 세기",
+  ],
   metadataBase: new URL("https://rate-snap.com"),
   verification: {
     google: "MonEK12xkfiRwDS7Uxw6iCZaroYf1GHztTivnR7fDwQ",
@@ -26,7 +36,11 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full">
       <head>
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-YX6R9QFS05" strategy="afterInteractive" />
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-YX6R9QFS05"
+          strategy="afterInteractive"
+        />
         <Script id="gtag-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -34,25 +48,13 @@ export default function RootLayout({
           gtag('config', 'G-YX6R9QFS05');
         `}</Script>
       </head>
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full bg-slate-50 text-slate-900">
         <LanguageProvider>
-          <Nav />
-          <main className="flex-1">
-            <div className="flex">
-              {/* 왼쪽 사이드바 메뉴 */}
-              <Sidebar />
-
-              {/* 페이지 콘텐츠 */}
-              <div className="flex-1 min-w-0">
-                {children}
-              </div>
-
-              {/* 광고 영역 — 준비 중 */}
-            </div>
-          </main>
-          <footer className="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-400">
-            © {new Date().getFullYear()} RateSnap. Stock & Crypto Market Snapshot.
-          </footer>
+          <div className="flex min-h-full flex-col">
+            <Nav />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
         </LanguageProvider>
       </body>
     </html>

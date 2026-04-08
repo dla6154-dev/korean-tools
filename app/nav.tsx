@@ -9,20 +9,20 @@ export default function Nav() {
   const links =
     lang === "ko"
       ? [
-          { href: "/", label: "홈" },
-          { href: "/stocks", label: "국내주식" },
-          { href: "/us-stocks", label: "미국주식" },
-          { href: "/bitcoin", label: "비트코인" },
-          { href: "/social", label: "사회 정세" },
-          { href: "/age", label: "편리한 기능" },
+          { href: "/",              label: "홈" },
+          { href: "/age",           label: "만 나이" },
+          { href: "/loan",          label: "대출 계산기" },
+          { href: "/bmi",           label: "BMI" },
+          { href: "/anniversary",   label: "기념일" },
+          { href: "/dday",          label: "디데이" },
         ]
       : [
-          { href: "/", label: "Home" },
-          { href: "/stocks", label: "KR Stocks" },
-          { href: "/us-stocks", label: "US Stocks" },
-          { href: "/bitcoin", label: "Bitcoin" },
-          { href: "/social", label: "Social News" },
-          { href: "/age", label: "Tools" },
+          { href: "/",              label: "Home" },
+          { href: "/age",           label: "Age" },
+          { href: "/loan",          label: "Loan" },
+          { href: "/bmi",           label: "BMI" },
+          { href: "/anniversary",   label: "Anniversary" },
+          { href: "/dday",          label: "D-Day" },
         ];
 
   return (

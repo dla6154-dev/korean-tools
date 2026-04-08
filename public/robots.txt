@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://korean-tools.vercel.app/sitemap.xml
+Sitemap: https://rate-snap.com/sitemap.xml
 
 # 자동 생성 — seo-agent.js
