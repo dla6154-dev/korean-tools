@@ -350,7 +350,7 @@ export default function HomePageClient() {
               </Link>
             </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {categories.map((category) => {
                 const accent = accentStyles[category.accent];
 
