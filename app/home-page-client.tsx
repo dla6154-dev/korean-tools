@@ -257,7 +257,7 @@ export default function HomePageClient() {
                         }
                       }}
                       placeholder={t.searchPlaceholder}
-                      className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 md:text-base"
+                      className="w-full bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted)] md:text-base"
                     />
                   </div>
                   <button
@@ -284,10 +284,10 @@ export default function HomePageClient() {
                               {tool.icon}
                             </span>
                             <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold text-slate-900">
+                              <p className="truncate text-sm font-semibold text-[var(--foreground)]">
                                 {tool.title[lang]}
                               </p>
-                              <p className="truncate text-xs text-slate-500">
+                              <p className="truncate text-xs text-[var(--muted)]">
                                 {tool.description[lang]}
                               </p>
                             </div>
@@ -298,7 +298,7 @@ export default function HomePageClient() {
                         </button>
                       ))
                     ) : (
-                      <p className="px-3 py-3 text-sm text-slate-500">{t.noResults}</p>
+                      <p className="px-3 py-3 text-sm text-[var(--muted)]">{t.noResults}</p>
                     )}
                   </div>
                 ) : null}
@@ -370,12 +370,12 @@ export default function HomePageClient() {
                         {category.countLabel[lang]}
                       </span>
                     </div>
-                    <h3 className="mt-4 text-lg font-semibold text-slate-900">{category.title[lang]}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{category.description[lang]}</p>
-                    <div className="mt-4 border-t border-slate-100 pt-4 text-sm text-slate-800">
+                    <h3 className="mt-4 text-lg font-semibold text-[var(--foreground)]">{category.title[lang]}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{category.description[lang]}</p>
+                    <div className="mt-4 border-t border-[var(--card-border)] pt-4 text-sm text-[var(--foreground)]">
                       {category.examples.map((item) => (
                         <div key={item.ko} className="flex items-center gap-2 py-1.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted)]" />
                           <span>{item[lang]}</span>
                         </div>
                       ))}
@@ -397,8 +397,8 @@ export default function HomePageClient() {
           <div className="rounded-[32px] border border-[var(--card-border)] bg-[var(--card)] p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.22)] md:p-8">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">{t.popularTitle}</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-500 md:text-base">
+                <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">{t.popularTitle}</h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--muted)] md:text-base">
                   {t.popularDescription}
                 </p>
               </div>
@@ -428,10 +428,10 @@ export default function HomePageClient() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="rounded-[32px] border border-[var(--card-border)] bg-[var(--card)] p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.22)] md:p-8">
             <div>
-              <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">
+              <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">
                 {t.categoryDirectoryTitle}
               </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-500 md:text-base">
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)] md:text-base">
                 {t.categoryDirectoryDescription}
               </p>
             </div>
@@ -458,10 +458,10 @@ export default function HomePageClient() {
                             {category.icon}
                           </div>
                           <div>
-                            <h3 className="text-xl font-semibold text-slate-950">
+                            <h3 className="text-xl font-semibold text-[var(--foreground)]">
                               {category.title[lang]}
                             </h3>
-                            <p className="mt-2 text-sm leading-6 text-slate-500">
+                            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
                               {category.description[lang]}
                             </p>
                           </div>
@@ -499,8 +499,8 @@ export default function HomePageClient() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="rounded-[32px] border border-[var(--card-border)] bg-[var(--card)] p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.22)] md:p-8">
             <div>
-              <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">{t.discoverTitle}</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-500 md:text-base">
+              <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">{t.discoverTitle}</h2>
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)] md:text-base">
                 {t.discoverDescription}
               </p>
             </div>
@@ -520,8 +520,8 @@ export default function HomePageClient() {
                       {tool.badge[lang]}
                     </span>
                   </div>
-                  <h3 className="mt-4 text-base font-semibold text-slate-900">{tool.title[lang]}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-slate-500">{tool.description[lang]}</p>
+                  <h3 className="mt-4 text-base font-semibold text-[var(--foreground)]">{tool.title[lang]}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-[var(--muted)]">{tool.description[lang]}</p>
                   <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
                     <span>{t.quickResultLabel}</span>
                     <span aria-hidden>→</span>
@@ -536,8 +536,8 @@ export default function HomePageClient() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-lg text-blue-600 shadow-sm">
                   ➕
                 </div>
-                <h3 className="mt-4 text-base font-semibold text-slate-900">{t.moreToolsCardTitle}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">{t.moreToolsCardDescription}</p>
+                <h3 className="mt-4 text-base font-semibold text-[var(--foreground)]">{t.moreToolsCardTitle}</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{t.moreToolsCardDescription}</p>
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
                   <span>{t.moreToolsCardAction}</span>
                   <span aria-hidden>→</span>
@@ -552,8 +552,8 @@ export default function HomePageClient() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="rounded-[32px] border border-blue-100 bg-[linear-gradient(180deg,rgba(239,246,255,0.92),rgba(255,255,255,0.98))] p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.2)] md:p-8">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">{t.whyTitle}</h2>
-              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500 md:text-base">
+              <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">{t.whyTitle}</h2>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)] md:text-base">
                 {t.whyDescription}
               </p>
             </div>
@@ -565,8 +565,8 @@ export default function HomePageClient() {
                   className="rounded-2xl border border-[var(--card-border)] bg-[var(--card)] p-5 shadow-sm"
                 >
                   <div className="text-2xl">{item.icon}</div>
-                  <h3 className="mt-5 text-sm font-semibold text-slate-900">{item.title[lang]}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">{item.description[lang]}</p>
+                  <h3 className="mt-5 text-sm font-semibold text-[var(--foreground)]">{item.title[lang]}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{item.description[lang]}</p>
                 </div>
               ))}
             </div>
@@ -596,15 +596,15 @@ export default function HomePageClient() {
                       onClick={() => setOpenFaq(open ? -1 : index)}
                       className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
                     >
-                      <span className={`text-sm font-semibold md:text-base ${open ? "text-blue-600" : "text-slate-900"}`}>
+                      <span className={`text-sm font-semibold md:text-base ${open ? "text-blue-600" : "text-[var(--foreground)]"}`}>
                         Q. {item.question[lang]}
                       </span>
-                      <span className={`text-xs ${open ? "text-blue-600" : "text-slate-400"}`}>
+                      <span className={`text-xs ${open ? "text-blue-600" : "text-[var(--muted)]"}`}>
                         {open ? "▲" : "▼"}
                       </span>
                     </button>
                     {open ? (
-                      <div className="border-t border-blue-100 px-5 py-4 text-sm leading-6 text-slate-600">
+                      <div className="border-t border-blue-100 px-5 py-4 text-sm leading-6 text-[var(--muted)]">
                         A. {item.answer[lang]}
                       </div>
                     ) : null}
