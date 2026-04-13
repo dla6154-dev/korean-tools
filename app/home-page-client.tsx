@@ -85,7 +85,7 @@ const accentStyles: Record<
     icon: "bg-blue-50 text-blue-600",
     link: "text-blue-600",
     bar: "bg-blue-500",
-    sectionBg: "bg-white",
+    sectionBg: "bg-[var(--card)]",
     chipBorder: "border-blue-200 bg-blue-50 text-blue-700",
   },
   green: {
@@ -93,7 +93,7 @@ const accentStyles: Record<
     icon: "bg-emerald-50 text-emerald-600",
     link: "text-emerald-600",
     bar: "bg-emerald-500",
-    sectionBg: "bg-gradient-to-r from-emerald-50/60 to-white",
+    sectionBg: "bg-[var(--card)] dark:bg-[var(--card)]",
     chipBorder: "border-emerald-200 bg-emerald-50 text-emerald-700",
   },
   orange: {
@@ -101,7 +101,7 @@ const accentStyles: Record<
     icon: "bg-orange-50 text-orange-600",
     link: "text-orange-600",
     bar: "bg-orange-500",
-    sectionBg: "bg-white",
+    sectionBg: "bg-[var(--card)]",
     chipBorder: "border-orange-200 bg-orange-50 text-orange-700",
   },
   violet: {
@@ -109,7 +109,7 @@ const accentStyles: Record<
     icon: "bg-violet-50 text-violet-600",
     link: "text-violet-600",
     bar: "bg-violet-500",
-    sectionBg: "bg-gradient-to-r from-violet-50/60 to-white",
+    sectionBg: "bg-[var(--card)] dark:bg-[var(--card)]",
     chipBorder: "border-violet-200 bg-violet-50 text-violet-700",
   },
 };
@@ -137,10 +137,10 @@ function ToolCard({
       {/* hover 시 배경 글로우 */}
       <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-blue-50/60 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none" />
       <div className="relative flex items-start justify-between gap-4">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-lg shadow-sm transition-transform duration-200 group-hover:scale-110">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--card-border)] bg-[var(--muted-bg)] text-lg shadow-sm transition-transform duration-200 group-hover:scale-110">
           {icon}
         </div>
-        <span className="rounded-md bg-slate-50 px-2 py-1 text-[11px] font-semibold text-slate-500 transition-colors group-hover:bg-blue-50 group-hover:text-blue-600">
+        <span className="rounded-md bg-[var(--muted-bg)] px-2 py-1 text-[11px] font-semibold text-[var(--muted)] transition-colors group-hover:bg-blue-50 group-hover:text-blue-600">
           {badge}
         </span>
       </div>
@@ -270,17 +270,17 @@ export default function HomePageClient() {
                 </div>
 
                 {deferredQuery.trim() ? (
-                  <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-2 text-left shadow-[0_18px_40px_-28px_rgba(15,23,42,0.24)]">
+                  <div className="mt-2 rounded-2xl border border-[var(--card-border)] bg-[var(--card)] p-2 text-left shadow-[0_18px_40px_-28px_rgba(15,23,42,0.24)]">
                     {activeSearchResults.length > 0 ? (
                       activeSearchResults.map((tool) => (
                         <button
                           key={tool.href}
                           type="button"
                           onMouseDown={() => handleSearch(tool.href)}
-                          className="flex w-full items-center justify-between rounded-xl px-3 py-3 transition hover:bg-slate-50"
+                          className="flex w-full items-center justify-between rounded-xl px-3 py-3 transition hover:bg-[var(--muted-bg)]"
                         >
                           <div className="flex min-w-0 items-center gap-3">
-                            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 text-sm">
+                            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--muted-bg)] text-sm">
                               {tool.icon}
                             </span>
                             <div className="min-w-0">
@@ -358,7 +358,7 @@ export default function HomePageClient() {
                   <section
                     key={category.id}
                     id={category.id}
-                    className="scroll-mt-24 rounded-[24px] border border-slate-200/90 bg-white/95 p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.18)]"
+                    className="scroll-mt-24 rounded-[24px] border border-[var(--card-border)] bg-[var(--card)] p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.18)]"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div
@@ -444,7 +444,7 @@ export default function HomePageClient() {
                   <section
                     key={category.id}
                     id={`category-${category.id}`}
-                    className={`scroll-mt-24 overflow-hidden rounded-[24px] border border-slate-200/90 ${accent.sectionBg} shadow-sm`}
+                    className={`scroll-mt-24 overflow-hidden rounded-[24px] border border-[var(--card-border)] ${accent.sectionBg} shadow-sm`}
                   >
                     {/* 상단 컬러 액센트 바 */}
                     <div className={`h-1 w-full ${accent.bar}`} />
@@ -510,10 +510,10 @@ export default function HomePageClient() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className="group flex h-full flex-col rounded-[24px] border border-slate-200/90 bg-white/95 p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_24px_50px_-34px_rgba(37,99,235,0.22)]"
+                  className="group flex h-full flex-col rounded-[24px] border border-[var(--card-border)] bg-[var(--card)] p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_24px_50px_-34px_rgba(37,99,235,0.22)]"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-100 bg-slate-50 text-lg shadow-sm">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--card-border)] bg-[var(--muted-bg)] text-lg shadow-sm">
                       {tool.icon}
                     </span>
                     <span className="rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-600">
@@ -531,7 +531,7 @@ export default function HomePageClient() {
 
               <Link
                 href="/#category-directory"
-                className="group rounded-[24px] border border-dashed border-slate-300 bg-white/95 p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.14)] transition hover:border-blue-200 hover:bg-blue-50/40"
+                className="group rounded-[24px] border border-dashed border-[var(--card-border)] bg-[var(--card)] p-5 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.14)] transition hover:border-blue-200 hover:bg-blue-50/40"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-lg text-blue-600 shadow-sm">
                   ➕
@@ -562,7 +562,7 @@ export default function HomePageClient() {
               {trustHighlights.map((item) => (
                 <div
                   key={item.title.ko}
-                  className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-sm"
+                  className="rounded-2xl border border-[var(--card-border)] bg-[var(--card)] p-5 shadow-sm"
                 >
                   <div className="text-2xl">{item.icon}</div>
                   <h3 className="mt-5 text-sm font-semibold text-slate-900">{item.title[lang]}</h3>
@@ -576,9 +576,9 @@ export default function HomePageClient() {
 
       <section id="faq" className="scroll-mt-24 py-6 md:py-8">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="rounded-[32px] border border-slate-200/90 bg-white/95 p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.22)] md:p-8">
-            <h2 className="text-2xl font-bold text-slate-950 md:text-3xl">{t.faqTitle}</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-500 md:text-base">{t.faqDescription}</p>
+          <div className="rounded-[32px] border border-[var(--card-border)] bg-[var(--card)] p-6 shadow-[0_18px_50px_-36px_rgba(15,23,42,0.22)] md:p-8">
+            <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">{t.faqTitle}</h2>
+            <p className="mt-3 text-sm leading-6 text-[var(--muted)] md:text-base">{t.faqDescription}</p>
 
             <div className="mt-8 space-y-3">
               {faqItems.map((item, index) => {
@@ -588,7 +588,7 @@ export default function HomePageClient() {
                   <div
                     key={item.question.ko}
                     className={`overflow-hidden rounded-2xl border ${
-                      open ? "border-blue-200 bg-blue-50/70" : "border-slate-200 bg-white"
+                      open ? "border-blue-200 bg-blue-50/70 dark:border-blue-800 dark:bg-blue-950/40" : "border-[var(--card-border)] bg-[var(--card)]"
                     }`}
                   >
                     <button
