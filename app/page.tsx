@@ -4,7 +4,10 @@ import HomePageClient from "./home-page-client";
 export const metadata: Metadata = {
   title: "Korean Tools",
   description:
-    "만 나이 계산기, 디데이 계산기, 글자수 세기, 이미지 압축기 등 한국형 실용 도구를 무료로 빠르게 사용할 수 있습니다.",
+    "留??섏씠 怨꾩궛湲? ?붾뜲??怨꾩궛湲? 湲?먯닔 ?멸린, ?대?吏 ?뺤텞湲????쒓뎅???ㅼ슜 ?꾧뎄瑜?臾대즺濡?鍮좊Ⅴ寃??ъ슜?????덉뒿?덈떎.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function HomePage() {

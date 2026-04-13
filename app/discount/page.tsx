@@ -1,0 +1,15 @@
+import type { Metadata } from "next";
+import DiscountClient from "./discount-client";
+
+export const metadata: Metadata = {
+  title: "할인율 계산기",
+  description:
+    "정가, 할인가, 할인율 중 두 값을 입력하면 나머지 하나와 절감 금액을 계산합니다.",
+  alternates: {
+    canonical: "/discount",
+  },
+};
+
+export default function DiscountPage() {
+  return <DiscountClient />;
+}

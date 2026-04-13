@@ -79,7 +79,7 @@ export default function ChosungPage() {
               <p className="text-xs font-semibold text-slate-400">{t.withLabel}</p>
               <button onClick={() => navigator.clipboard.writeText(result)} className="text-xs text-blue-500 hover:text-blue-700 font-medium">{t.copy}</button>
             </div>
-            <p className="text-lg font-bold text-slate-700 tracking-widest break-all">{result}</p>
+            <p className="text-lg font-bold text-slate-700 tracking-widest break-keep">{result}</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
