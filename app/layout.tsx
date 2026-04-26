@@ -24,6 +24,14 @@ export const metadata: Metadata = {
     "글자수 세기",
   ],
   metadataBase: new URL("https://rate-snap.com"),
+  alternates: {
+    canonical: "https://rate-snap.com",
+    languages: {
+      "ko": "https://rate-snap.com",
+      "en": "https://rate-snap.com",
+      "x-default": "https://rate-snap.com",
+    },
+  },
   verification: {
     google: "MonEK12xkfiRwDS7Uxw6iCZaroYf1GHztTivnR7fDwQ",
     other: {

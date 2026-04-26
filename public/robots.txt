@@ -3,4 +3,4 @@ Allow: /
 
 Sitemap: https://rate-snap.com/sitemap.xml
 
-# 자동 생성 — seo-agent.js
+Host: rate-snap.com
