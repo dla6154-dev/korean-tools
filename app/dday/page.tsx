@@ -8,5 +8,21 @@ export const metadata: Metadata = {
 };
 
 export default function DdayPage() {
-  return <DdayClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "디데이 계산기 — D-Day 남은 날짜 무료 계산",
+    "url": "https://rate-snap.com/dday",
+    "description": "수능·시험·여행·생일·전역일까지 며칠 남았는지 계산합니다. 여러 디데이를 동시에 등록하고 한눈에 관리하세요. 무료, 로그인 불필요.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <DdayClient />
+    </>
+  );
 }

@@ -11,5 +11,21 @@ export const metadata: Metadata = {
 };
 
 export default function MarkdownToHtmlPage() {
-  return <MarkdownToHtmlClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "마크다운 → HTML",
+    "url": "https://rate-snap.com/markdown-to-html",
+    "description": "마크다운 텍스트를 HTML로 변환하고 실시간 미리보기로 결과를 확인할 수 있습니다.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <MarkdownToHtmlClient />
+    </>
+  );
 }

@@ -42,6 +42,20 @@ export default function RootLayout({
       <head>
         {/* 다크모드 flash 방지 */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(t==null&&d)){document.documentElement.classList.add('dark');}})();` }} />
+        {/* WebSite 구조화 데이터 */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Korean Tools",
+          "url": "https://rate-snap.com",
+          "description": "날짜 계산, 텍스트 변환, 이미지 처리, 생활 계산까지. 한국에서 자주 쓰는 실용 도구를 한곳에 모았습니다.",
+          "inLanguage": ["ko", "en"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": { "@type": "EntryPoint", "urlTemplate": "https://rate-snap.com/?q={search_term_string}" },
+            "query-input": "required name=search_term_string"
+          }
+        }) }} />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-YX6R9QFS05"

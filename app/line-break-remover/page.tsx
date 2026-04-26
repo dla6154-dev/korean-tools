@@ -11,5 +11,21 @@ export const metadata: Metadata = {
 };
 
 export default function LineBreakRemoverPage() {
-  return <LineBreakRemoverClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "줄바꿈 제거기",
+    "url": "https://rate-snap.com/line-break-remover",
+    "description": "복사한 문장의 줄바꿈을 한 번에 정리해서 한 줄 텍스트나 깔끔한 문단으로 변환합니다.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <LineBreakRemoverClient />
+    </>
+  );
 }

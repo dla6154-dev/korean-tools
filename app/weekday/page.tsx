@@ -18,5 +18,21 @@ export const metadata: Metadata = {
 };
 
 export default function WeekdayPage() {
-  return <WeekdayClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "요일 계산기 — 날짜 입력하면 요일 즉시 확인",
+    "url": "https://rate-snap.com/weekday",
+    "description": "생년월일·기념일·약속 날짜의 요일을 바로 확인합니다. 몇 번째 주인지, 연중 몇 번째 날인지도 함께 계산해드립니다. 설치 없이 무료.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <WeekdayClient />
+    </>
+  );
 }

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디자인 개선 미리보기</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Pretendard', sans-serif; background: #f1f5f9; color: #1e293b; }
+
+  /* ===== 레이아웃 ===== */
+  .compare-wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  .compare-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .compare-sub { font-size: 14px; color: #64748b; margin-bottom: 32px; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; }
+  @media (max-width: 900px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  .panel { border-radius: 16px; overflow: hidden; border: 2px solid transparent; }
+  .panel.before { border-color: #e2e8f0; }
+  .panel.after { border-color: #3b82f6; box-shadow: 0 0 0 4px #dbeafe; }
+
+  .panel-label { padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .panel.before .panel-label { background: #f8fafc; color: #94a3b8; border-bottom: 1px solid #e2e8f0; }
+  .panel.after .panel-label { background: #eff6ff; color: #2563eb; border-bottom: 1px solid #bfdbfe; }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #94a3b8;
+    padding: 16px 20px 8px;
+    background: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  /* ===== [1] 카드 hover ===== */
+  .cards-area { padding: 20px; background: #f8fafc; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  /* Before 카드 */
+  .card-before {
+    background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 16px; cursor: pointer;
+    transition: none;
+  }
+  .card-before:hover { background: #f8fafc; }
+
+  /* After 카드 */
+  .card-after {
+    background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 16px; cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    position: relative;
+  }
+  .card-after:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(59,130,246,0.18);
+    border-color: #93c5fd;
+  }
+  .card-after::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: 12px;
+    background: linear-gradient(135deg, #eff6ff 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.18s;
+    pointer-events: none;
+  }
+  .card-after:hover::after { opacity: 1; }
+
+  .card-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .card-badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px;
+    background: #eff6ff; color: #2563eb; margin-bottom: 6px;
+  }
+  .card-title { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+  .card-desc { font-size: 11px; color: #94a3b8; line-height: 1.5; }
+  .card-arrow {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; color: #94a3b8; margin-top: 8px;
+    opacity: 0; transition: opacity 0.18s, color 0.18s;
+  }
+  .card-after:hover .card-arrow { opacity: 1; color: #3b82f6; }
+
+  /* ===== [2] 섹션 배경 교차 ===== */
+  .sections-area { }
+
+  /* Before 섹션 */
+  .section-before { padding: 20px; background: white; }
+  .section-before + .section-before { background: #f8fafc; }
+  .sec-heading { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .sec-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
+  .sec-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sec-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+  }
+
+  /* After 섹션 */
+  .section-after-a { padding: 20px; background: white; }
+  .section-after-b {
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%);
+    border-top: 1px solid #dbeafe;
+    border-bottom: 1px solid #dbeafe;
+  }
+  .section-after-c { padding: 20px; background: white; }
+
+  .sec-heading-after { font-size: 15px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap-8: 8px; }
+  .sec-accent { display: inline-block; width: 3px; height: 16px; border-radius: 2px; background: #3b82f6; margin-right: 8px; flex-shrink: 0; }
+  .sec-chip-after {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    background: white; color: #3b82f6; border: 1px solid #bfdbfe;
+    font-weight: 500;
+  }
+  .sec-chip-after-2 {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;
+    font-weight: 500;
+  }
+
+  /* ===== [3] Hero 텍스트 정렬 ===== */
+  .hero-area { padding: 24px; }
+
+  .hero-before { text-align: center; background: white; border-radius: 12px; padding: 24px; }
+  .hero-badge-before {
+    display: inline-block; font-size: 11px; background: #f1f5f9; color: #64748b;
+    border-radius: 20px; padding: 4px 12px; margin-bottom: 12px;
+  }
+  .hero-h1-before { font-size: 28px; font-weight: 900; line-height: 1.25; margin-bottom: 12px; word-break: keep-all; }
+  .hero-p-before { font-size: 12px; color: #64748b; line-height: 1.7; margin-bottom: 16px; word-break: keep-all; }
+  .hero-chips-before { display: flex; gap: 8px; justify-content: center; }
+  .hero-chip-before {
+    flex: 1; max-width: 160px; padding: 10px 8px; border: 1px solid #e2e8f0;
+    border-radius: 10px; font-size: 11px; color: #475569; background: white;
+    text-align: center;
+  }
+
+  .hero-after { background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%); border-radius: 12px; padding: 28px; color: white; }
+  .hero-badge-after {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);
+    border-radius: 20px; padding: 4px 12px; margin-bottom: 14px;
+    border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+  }
+  .hero-h1-after {
+    font-size: 28px; font-weight: 900; line-height: 1.25; margin-bottom: 10px;
+    word-break: keep-all;
+    background: linear-gradient(90deg, #fff 60%, #93c5fd 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-p-after { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 20px; word-break: keep-all; }
+  .hero-chips-after { display: flex; gap: 8px; }
+  .hero-chip-after {
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 11px; font-weight: 600;
+    background: rgba(255,255,255,0.12); color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .hero-chip-icon { font-size: 13px; }
+
+  .divider { height: 1px; background: #e2e8f0; margin: 32px 0; }
+  .change-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px;
+    background: #fee2e2; color: #dc2626; border-radius: 4px; margin-right: 6px;
+  }
+  .change-tag.new { background: #dcfce7; color: #16a34a; }
+</style>
+</head>
+<body>
+<div class="compare-wrap">
+  <div class="compare-title">🎨 디자인 개선 미리보기</div>
+  <div class="compare-sub">현재(Before) vs 개선안(After) — 마우스를 카드 위에 올려보세요</div>
+
+  <!-- ===== 1. 카드 hover ===== -->
+  <div style="font-size:13px; font-weight:700; margin-bottom:12px;">
+    <span class="change-tag">현재</span> 카드에 hover 반응이 없음
+    &nbsp;→&nbsp;
+    <span class="change-tag new">개선</span> 카드가 떠오르며 파란 글로우 + 화살표 등장
+  </div>
+  <div class="compare-grid">
+    <div class="panel before">
+      <div class="panel-label">Before</div>
+      <div class="section-label">인기 도구</div>
+      <div class="cards-area">
+        <div class="cards-grid">
+          <div class="card-before">
+            <span class="card-icon">🎂</span>
+            <div class="card-badge">날짜</div>
+            <div class="card-title">만 나이 계산기</div>
+            <div class="card-desc">생년월일을 기준으로 만 나이를 계산합니다.</div>
+          </div>
+          <div class="card-before">
+            <span class="card-icon">💰</span>
+            <div class="card-badge">생활</div>
+            <div class="card-title">실수령액 계산기</div>
+            <div class="card-desc">세전 월급 기준 예상 실수령액을 계산합니다.</div>
+          </div>
+          <div class="card-before">
+            <span class="card-icon">🗜️</span>
+            <div class="card-badge">이미지</div>
+            <div class="card-title">이미지 압축기</div>
+            <div class="card-desc">브라우저에서 바로 이미지 용량을 줄입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel after">
+      <div class="panel-label">✨ After — 카드에 마우스 올려보세요</div>
+      <div class="section-label">인기 도구</div>
+      <div class="cards-area">
+        <div class="cards-grid">
+          <div class="card-after">
+            <span class="card-icon">🎂</span>
+            <div class="card-badge">날짜</div>
+            <div class="card-title">만 나이 계산기</div>
+            <div class="card-desc">생년월일을 기준으로 만 나이를 계산합니다.</div>
+            <div class="card-arrow">바로 사용하기 →</div>
+          </div>
+          <div class="card-after">
+            <span class="card-icon">💰</span>
+            <div class="card-badge">생활</div>
+            <div class="card-title">실수령액 계산기</div>
+            <div class="card-desc">세전 월급 기준 예상 실수령액을 계산합니다.</div>
+            <div class="card-arrow">바로 사용하기 →</div>
+          </div>
+          <div class="card-after">
+            <span class="card-icon">🗜️</span>
+            <div class="card-badge">이미지</div>
+            <div class="card-title">이미지 압축기</div>
+            <div class="card-desc">브라우저에서 바로 이미지 용량을 줄입니다.</div>
+            <div class="card-arrow">바로 사용하기 →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== 2. 섹션 배경 교차 ===== -->
+  <div style="font-size:13px; font-weight:700; margin-bottom:12px;">
+    <span class="change-tag">현재</span> 섹션 배경이 모두 흰색 → 구분이 없음
+    &nbsp;→&nbsp;
+    <span class="change-tag new">개선</span> 섹션마다 배경을 교차 + 왼쪽 액센트 바
+  </div>
+  <div class="compare-grid">
+    <div class="panel before">
+      <div class="panel-label">Before</div>
+      <div class="section-before">
+        <div class="sec-heading">🗓️ 날짜 · 기간</div>
+        <div class="sec-sub">날짜 계산과 기간 측정을 빠르게 처리합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip">만 나이 계산기</span>
+          <span class="sec-chip">날짜 더하기/빼기</span>
+          <span class="sec-chip">디데이 계산기</span>
+        </div>
+      </div>
+      <div class="section-before">
+        <div class="sec-heading">✏️ 텍스트 도구</div>
+        <div class="sec-sub">글자 수, 변환, 한글 입력 보정에 집중합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip">글자수 세기</span>
+          <span class="sec-chip">JSON 포매터</span>
+          <span class="sec-chip">줄바꿈 제거기</span>
+        </div>
+      </div>
+      <div class="section-before" style="background:white;">
+        <div class="sec-heading">🖼️ 이미지 도구</div>
+        <div class="sec-sub">브라우저에서 바로 이미지 최적화를 처리합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip">이미지 압축기</span>
+          <span class="sec-chip">WebP 변환</span>
+          <span class="sec-chip">이미지 리사이즈</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel after">
+      <div class="panel-label">✨ After</div>
+      <div class="section-after-a">
+        <div class="sec-heading-after" style="display:flex;align-items:center;">
+          <span class="sec-accent" style="background:#3b82f6;"></span>날짜 · 기간
+        </div>
+        <div class="sec-sub">날짜 계산과 기간 측정을 빠르게 처리합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip-after">만 나이 계산기</span>
+          <span class="sec-chip-after">날짜 더하기/빼기</span>
+          <span class="sec-chip-after">디데이 계산기</span>
+        </div>
+      </div>
+      <div class="section-after-b">
+        <div class="sec-heading-after" style="display:flex;align-items:center;">
+          <span class="sec-accent" style="background:#10b981;"></span>텍스트 도구
+        </div>
+        <div class="sec-sub">글자 수, 변환, 한글 입력 보정에 집중합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip-after-2">글자수 세기</span>
+          <span class="sec-chip-after-2">JSON 포매터</span>
+          <span class="sec-chip-after-2">줄바꿈 제거기</span>
+        </div>
+      </div>
+      <div class="section-after-c">
+        <div class="sec-heading-after" style="display:flex;align-items:center;">
+          <span class="sec-accent" style="background:#f59e0b;"></span>이미지 도구
+        </div>
+        <div class="sec-sub">브라우저에서 바로 이미지 최적화를 처리합니다.</div>
+        <div class="sec-tools">
+          <span class="sec-chip-after" style="color:#d97706;border-color:#fde68a;background:#fffbeb;">이미지 압축기</span>
+          <span class="sec-chip-after" style="color:#d97706;border-color:#fde68a;background:#fffbeb;">WebP 변환</span>
+          <span class="sec-chip-after" style="color:#d97706;border-color:#fde68a;background:#fffbeb;">이미지 리사이즈</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== 3. Hero 섹션 ===== -->
+  <div style="font-size:13px; font-weight:700; margin-bottom:12px;">
+    <span class="change-tag">현재</span> Hero 배경이 흰색 → 임팩트 없음
+    &nbsp;→&nbsp;
+    <span class="change-tag new">개선</span> 진한 네이비-블루 그라데이션 + 글로우 텍스트
+  </div>
+  <div class="compare-grid">
+    <div class="panel before">
+      <div class="panel-label">Before</div>
+      <div class="hero-area">
+        <div class="hero-before">
+          <div class="hero-badge-before">무료 · 빠른 · 로그인 불필요</div>
+          <div class="hero-h1-before">필요한 도구, 바로<br>찾고 바로 쓰세요</div>
+          <div class="hero-p-before">날짜 계산, 텍스트 변환, 이미지 처리, 생활 계산까지.<br>한국에서 자주 쓰는 실용 도구를 한곳에 모았습니다.</div>
+          <div class="hero-chips-before">
+            <div class="hero-chip-before">무료 도구</div>
+            <div class="hero-chip-before">로그인 없음</div>
+            <div class="hero-chip-before">브라우저에서 바로 사용</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel after">
+      <div class="panel-label">✨ After</div>
+      <div class="hero-area" style="background:#0f172a; border-radius:0;">
+        <div class="hero-after">
+          <div class="hero-badge-after">⚡ 무료 · 빠른 · 로그인 불필요</div>
+          <div class="hero-h1-after">필요한 도구, 바로<br>찾고 바로 쓰세요</div>
+          <div class="hero-p-after">날짜 계산, 텍스트 변환, 이미지 처리, 생활 계산까지.<br>자주 쓰는 실용 도구를 한곳에 모았습니다.</div>
+          <div class="hero-chips-after">
+            <div class="hero-chip-after"><span class="hero-chip-icon">🆓</span> 무료</div>
+            <div class="hero-chip-after"><span class="hero-chip-icon">🔓</span> 로그인 없음</div>
+            <div class="hero-chip-after"><span class="hero-chip-icon">📱</span> 모바일 최적화</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: 24px 0 8px; font-size:12px; color:#94a3b8;">
+    이 미리보기는 <code>korean-tools/preview/</code> 폴더에 저장됩니다.
+  </div>
+</div>
+</body>
+</html>

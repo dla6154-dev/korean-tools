@@ -8,5 +8,21 @@ export const metadata: Metadata = {
 };
 
 export default function UnitPricePage() {
-  return <BeerPriceClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "단위 가격 비교기",
+    "url": "https://rate-snap.com/unit-price",
+    "description": "L, ml, kg, g, 개 기준으로 묶음 상품까지 환산해서 단위 가격을 비교할 수 있습니다.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <BeerPriceClient />
+    </>
+  );
 }

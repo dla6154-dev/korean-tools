@@ -19,5 +19,21 @@ export const metadata: Metadata = {
 };
 
 export default function DateCalcPage() {
-  return <DateCalcClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "날짜 계산기 — 며칠 후·전 날짜, 100일 기념일 계산",
+    "url": "https://rate-snap.com/date-calc",
+    "description": "기준 날짜에서 며칠 후·전 날짜를 바로 계산합니다. 100일 기념일, 계약 만기일, 납기일 등 중요한 날짜를 즉시 확인하세요. 무료, 설치 없음.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <DateCalcClient />
+    </>
+  );
 }

@@ -9,5 +9,21 @@ export const metadata: Metadata = {
 };
 
 export default function ImageCompressPage() {
-  return <ImageCompressClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "이미지 압축기",
+    "url": "https://rate-snap.com/image-compress",
+    "description": "JPG, PNG, WebP 이미지를 브라우저에서 바로 압축합니다. 서버 업로드 없이 용량을 줄이고 PNG를 JPG로 변환합니다.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <ImageCompressClient />
+    </>
+  );
 }

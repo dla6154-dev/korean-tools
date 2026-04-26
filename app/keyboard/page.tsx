@@ -8,5 +8,21 @@ export const metadata: Metadata = {
 };
 
 export default function KeyboardPage() {
-  return <KeyboardClient />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "키보드 오타 변환기 — dkssudgktpdy → 안녕하세요 즉시 변환",
+    "url": "https://rate-snap.com/keyboard",
+    "description": "한/영 전환을 깜박하고 입력한 오타를 1초 만에 고쳐드립니다. 영어→한글, 한글→영어 양방향 무료 변환. 붙여넣기만 하면 끝.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "inLanguage": "ko"
+  };
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <KeyboardClient />
+    </>
+  );
 }
