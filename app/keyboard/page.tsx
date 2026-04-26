@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import KeyboardClient from "./keyboard-client";
 
 export const metadata: Metadata = {
-  title: "키보드 오타 변환기 - 영어 한글 오타 자동 교정",
-  description: "한/영 전환 없이 잘못 입력한 키보드 오타를 올바른 언어로 변환합니다. dkssudgktpdy를 안녕하세요로 즉시 변환해드립니다.",
+  title: "키보드 오타 변환기 — dkssudgktpdy → 안녕하세요 즉시 변환",
+  description: "한/영 전환을 깜박하고 입력한 오타를 1초 만에 고쳐드립니다. 영어→한글, 한글→영어 양방향 무료 변환. 붙여넣기만 하면 끝.",
   alternates: { canonical: "/keyboard" },
 };
 

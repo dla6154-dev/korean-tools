@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import DateCalcClient from "./date-calc-client";
 
 export const metadata: Metadata = {
-  title: "날짜 더하기 / 빼기 계산기",
+  title: "날짜 계산기 — 며칠 후·전 날짜, 100일 기념일 계산",
   description:
-    "기준 날짜에 일수를 더하거나 빼서 결과 날짜를 계산합니다. 100일 후, 200일 전, 특정 날짜 전후 계산에 바로 사용할 수 있습니다.",
+    "기준 날짜에서 며칠 후·전 날짜를 바로 계산합니다. 100일 기념일, 계약 만기일, 납기일 등 중요한 날짜를 즉시 확인하세요. 무료, 설치 없음.",
   keywords: [
     "날짜 더하기",
     "날짜 빼기",

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import LoanClient from "./loan-client";
 
 export const metadata: Metadata = {
-  title: "대출 이자 계산기 - 원리금균등 원금균등 만기일시 상환",
-  description: "대출 금액, 금리, 기간을 입력하면 상환 방식별 월 납부액과 총 이자를 계산합니다. 원리금균등, 원금균등, 만기일시 상환을 한눈에 비교하세요.",
+  title: "대출 계산기 — 원리금균등·원금균등·만기일시 월 상환액 비교",
+  description: "대출 금액·금리·기간을 입력하면 3가지 상환 방식의 월 납부액과 총 이자를 즉시 비교합니다. 가장 유리한 상환 방법을 무료로 확인하세요.",
   alternates: { canonical: "/loan" },
 };
 
