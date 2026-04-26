@@ -373,12 +373,20 @@ export default function HomePageClient() {
                     <h3 className="mt-4 text-lg font-semibold text-[var(--foreground)]">{category.title[lang]}</h3>
                     <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{category.description[lang]}</p>
                     <div className="mt-4 border-t border-[var(--card-border)] pt-4 text-sm text-[var(--foreground)]">
-                      {category.examples.map((item) => (
-                        <div key={item.ko} className="flex items-center gap-2 py-1.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted)]" />
-                          <span>{item[lang]}</span>
-                        </div>
-                      ))}
+                      {category.examples.map((item) => {
+                        const matchedTool = tools.find((t) => t.title.ko === item.ko);
+                        return matchedTool ? (
+                          <Link key={item.ko} href={matchedTool.href} className="flex items-center gap-2 py-1.5 transition-colors hover:text-blue-500">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted)]" />
+                            <span>{item[lang]}</span>
+                          </Link>
+                        ) : (
+                          <div key={item.ko} className="flex items-center gap-2 py-1.5">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted)]" />
+                            <span>{item[lang]}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                     <Link href={`/#category-${category.id}`} className={`mt-4 inline-flex items-center gap-2 text-sm font-semibold ${accent.link}`}>
                       <span>{t.sectionAll}</span>
