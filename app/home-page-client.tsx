@@ -225,7 +225,7 @@ export default function HomePageClient() {
         <div className="absolute bottom-0 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-6xl px-4">
-          <div className="rounded-[36px] bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 px-5 py-8 text-center shadow-[0_32px_80px_-24px_rgba(15,23,42,0.5)] md:px-10 md:py-12">
+          <div className="rounded-[36px] bg-gradient-to-br from-blue-600 via-indigo-700 to-blue-800 dark:from-slate-900 dark:via-blue-950 dark:to-slate-900 px-5 py-8 text-center shadow-[0_32px_80px_-24px_rgba(15,23,42,0.5)] md:px-10 md:py-12">
             {/* 내부 글로우 장식 */}
             <div className="pointer-events-none absolute inset-0 rounded-[36px] overflow-hidden">
               <div className="absolute -top-20 left-1/2 h-64 w-96 -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl" />
