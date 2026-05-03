@@ -66,7 +66,7 @@ export default function RootLayout({
         }) }} />
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-YX6R9QFS05"
+          src="https://www.googletagmanager.com/gtag/js?id=G-VX6R9QFSQ5"
           strategy="afterInteractive"
         />
         <Script id="gtag-init" strategy="afterInteractive">{`
@@ -75,7 +75,7 @@ export default function RootLayout({
           var debugSearch = new URLSearchParams(window.location.search);
           var hasDebugSignal = debugSearch.has('gtm_debug') || debugSearch.has('_dbg');
           gtag('js', new Date());
-          gtag('config', 'G-YX6R9QFS05', hasDebugSignal ? { debug_mode: true } : {});
+          gtag('config', 'G-VX6R9QFSQ5', hasDebugSignal ? { debug_mode: true } : {});
         `}</Script>
       </head>
       <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
