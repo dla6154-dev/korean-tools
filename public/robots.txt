@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://rate-snap.com/sitemap.xml
-
-Host: rate-snap.com

@@ -1,0 +1,70 @@
+name: Growth Agent
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 1 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  growth-loop:
+    runs-on: ubuntu-latest
+    env:
+      GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
+      GA4_MEASUREMENT_ID: ${{ vars.GA4_MEASUREMENT_ID }}
+      GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      GOOGLE_SERVICE_ACCOUNT_BASE64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_BASE64 }}
+      GROWTH_GA4_END_OFFSET_DAYS: ${{ vars.GROWTH_GA4_END_OFFSET_DAYS }}
+      GROWTH_GSC_END_OFFSET_DAYS: ${{ vars.GROWTH_GSC_END_OFFSET_DAYS }}
+      GSC_SEARCH_TYPE: ${{ vars.GSC_SEARCH_TYPE }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch live growth metrics
+        if: (env.GA4_PROPERTY_ID != '' || env.GA4_MEASUREMENT_ID != '') && env.GSC_SITE_URL != '' && (env.GOOGLE_SERVICE_ACCOUNT_JSON != '' || env.GOOGLE_SERVICE_ACCOUNT_BASE64 != '')
+        run: npm run growth:fetch
+
+      - name: Run growth loop
+        run: npm run growth:loop
+
+      - name: Execute safe growth change
+        id: growth_execute
+        run: npm run growth:execute
+
+      - name: Create draft pull request
+        if: steps.growth_execute.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: codex/growth-agent-${{ steps.growth_execute.outputs.branch_suffix }}
+          commit-message: ${{ steps.growth_execute.outputs.commit_message }}
+          title: ${{ steps.growth_execute.outputs.pr_title }}
+          body-path: growth/output/growth-pr-body.md
+          base: ${{ github.event.repository.default_branch }}
+          delete-branch: true
+          draft: true
+          labels: |
+            automated
+            growth
+
+      - name: Upload growth artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: growth-output
+          path: |
+            growth/output/
+            growth/inputs/site-metrics.json

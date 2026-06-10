@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, useDeferredValue, useState } from "react";
+import { growthHomepagePromotions } from "./data/growth-config";
 import { useLanguage } from "./language-context";
 import { categories, faqItems, tools, trustHighlights, type ToolAccent } from "./tool-content";
 
@@ -162,7 +163,14 @@ export default function HomePageClient() {
   const [openFaq, setOpenFaq] = useState(0);
   const deferredQuery = useDeferredValue(query);
   const featuredTools = tools.filter((tool) => tool.featured);
-  const discoverTools = tools.filter((tool) => tool.discover);
+  const promotedTools = growthHomepagePromotions
+    .map((promotion) => tools.find((tool) => tool.href === promotion.route))
+    .filter((tool): tool is NonNullable<(typeof tools)[number]> => Boolean(tool));
+  const discoverTools = Array.from(
+    new Map(
+      [...promotedTools, ...tools.filter((tool) => tool.discover)].map((tool) => [tool.href, tool]),
+    ).values(),
+  );
   const categoryGroups = categories.map((category) => ({
     ...category,
     items: tools.filter((tool) => tool.categoryId === category.id),

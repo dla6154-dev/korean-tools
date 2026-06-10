@@ -10,6 +10,7 @@ import {
 } from "../components/tool-page-shell";
 import { useLanguage } from "../language-context";
 import { tools } from "../tool-content";
+import { useToolAnalytics } from "../use-tool-analytics";
 
 type DateCalcResult = {
   resultDate: Date;
@@ -164,6 +165,7 @@ function formatIsoDate(date: Date) {
 export default function DateCalcPage() {
   const { lang } = useLanguage();
   const t = T[lang];
+  const { markStart, trackComplete, trackCopyResult } = useToolAnalytics("date-calc", lang);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -186,6 +188,7 @@ export default function DateCalcPage() {
     }));
 
   function calculate() {
+    markStart({ trigger: "calculate_click" });
     setCopied(false);
     setError("");
 
@@ -211,6 +214,10 @@ export default function DateCalcPage() {
     }
 
     setResult({ resultDate, actualDays: daysNum, direction });
+    trackComplete({
+      days_value: daysNum,
+      direction,
+    });
   }
 
   async function copyResult() {
@@ -221,6 +228,10 @@ export default function DateCalcPage() {
         ? `${t.title}\n기준 날짜: ${baseDate}\n계산: ${result.actualDays}${label}\n결과: ${formatDisplayDate(result.resultDate, lang)}`
         : `${t.title}\nBase date: ${baseDate}\nCalculation: ${result.actualDays} ${label}\nResult: ${formatDisplayDate(result.resultDate, lang)}`;
     await navigator.clipboard.writeText(text);
+    trackCopyResult({
+      days_value: result.actualDays,
+      direction: result.direction,
+    });
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   }

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "score_scale": "1-5",
+  "weights": {
+    "trafficPotential": 30,
+    "evidenceStrength": 20,
+    "userValue": 20,
+    "implementationEase": 15,
+    "seoSafety": 15
+  },
+  "thresholds": {
+    "auto_pr_candidate": 78,
+    "manual_review": 60
+  },
+  "notes": {
+    "trafficPotential": "Expected upside if the experiment succeeds.",
+    "evidenceStrength": "How much real data supports the experiment.",
+    "userValue": "How strongly the change improves a real user journey.",
+    "implementationEase": "How quickly and safely the change can be shipped.",
+    "seoSafety": "Likelihood that the change avoids indexing or ranking harm."
+  }
+}

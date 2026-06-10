@@ -9,6 +9,7 @@ import {
 } from "../components/tool-page-shell";
 import { tools } from "../tool-content";
 import { useLanguage } from "../language-context";
+import { useToolAnalytics } from "../use-tool-analytics";
 import { useState } from "react";
 
 type MeasureUnit = "l" | "ml" | "kg" | "g" | "ea";
@@ -225,6 +226,7 @@ function createItem(id: number): PriceInput {
 export default function BeerPriceClient() {
   const { lang } = useLanguage();
   const t = T[lang];
+  const { markStart, trackComplete } = useToolAnalytics("unit-price", lang);
   const [items, setItems] = useState<PriceInput[]>([createItem(1), createItem(2)]);
   const [editingNameId, setEditingNameId] = useState<number | null>(null);
   const [error, setError] = useState("");
@@ -296,6 +298,8 @@ export default function BeerPriceClient() {
   }
 
   function compareItems() {
+    markStart({ trigger: "compare_click" });
+
     if (rankedItems.length === 0) {
       setError(t.invalid);
       setShowResults(false);
@@ -310,6 +314,10 @@ export default function BeerPriceClient() {
 
     setError("");
     setShowResults(true);
+    trackComplete({
+      item_count: rankedItems.length,
+      dimension: uniqueDimensions[0] ?? "unknown",
+    });
   }
 
   function formatNumber(value: number) {

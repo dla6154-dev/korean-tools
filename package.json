@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "growth:fetch": "node scripts/growth-fetch.mjs",
+    "growth:import": "node scripts/growth-import.mjs",
+    "growth:push-secrets": "node scripts/growth-push-secrets.mjs",
+    "growth:report": "node scripts/growth-report.mjs",
+    "growth:plan": "node scripts/growth-plan.mjs",
+    "growth:execute": "node scripts/growth-execute.mjs",
+    "growth:loop": "node scripts/growth-loop.mjs"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.6",
