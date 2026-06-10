@@ -1,35 +1,37 @@
-import type { Metadata } from "next";
 import DateCalcClient from "./date-calc-client";
+import { resolveGrowthMetadata } from "../data/growth-config";
+import { createToolMetadata, createToolStructuredData } from "../seo";
 
-export const metadata: Metadata = {
-  title: "날짜 계산기 — 며칠 후·전 날짜, 100일 기념일 계산",
+const defaults = {
+  title: "날짜 계산기 | 며칠 후 날짜, 100일 계산, 기념일 계산",
   description:
-    "기준 날짜에서 며칠 후·전 날짜를 바로 계산합니다. 100일 기념일, 계약 만기일, 납기일 등 중요한 날짜를 즉시 확인하세요. 무료, 설치 없음.",
-  keywords: [
-    "날짜 더하기",
-    "날짜 빼기",
-    "날짜 계산기",
-    "100일 계산",
-    "며칠 후 날짜",
-    "며칠 전 날짜",
-  ],
-  alternates: {
-    canonical: "/date-calc",
-  },
+    "기준 날짜에서 며칠 후 또는 이전 날짜를 바로 계산합니다. 100일, 기념일, 마감일 같은 중요한 날짜를 빠르게 확인하세요.",
 };
 
+const { title, description } = resolveGrowthMetadata("/date-calc", defaults);
+
+export const metadata = createToolMetadata({
+  title,
+  description,
+  path: "/date-calc",
+  keywords: [
+    "날짜 계산기",
+    "며칠 후 날짜",
+    "며칠 전 날짜",
+    "100일 계산",
+    "기념일 계산",
+    "마감일 계산",
+  ],
+});
+
 export default function DateCalcPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "날짜 계산기 — 며칠 후·전 날짜, 100일 기념일 계산",
-    "url": "https://rate-snap.com/date-calc",
-    "description": "기준 날짜에서 며칠 후·전 날짜를 바로 계산합니다. 100일 기념일, 계약 만기일, 납기일 등 중요한 날짜를 즉시 확인하세요. 무료, 설치 없음.",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
-    "inLanguage": "ko"
-  };
+  const jsonLd = createToolStructuredData({
+    title,
+    description,
+    path: "/date-calc",
+    featureList: ["며칠 후 날짜 계산", "며칠 전 날짜 계산", "100일 기념일 계산"],
+  });
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

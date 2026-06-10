@@ -3,34 +3,54 @@ import Script from "next/script";
 import Footer from "./footer";
 import { LanguageProvider } from "./language-context";
 import Nav from "./nav";
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_METADATA_BASE,
+  SITE_NAME,
+  SITE_URL,
+} from "./seo";
 import { ThemeProvider } from "./theme-context";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Korean Tools - 생활 유틸리티 도구 모음",
-    template: "%s | Korean Tools",
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  inLanguage: "ko-KR",
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
   },
-  description:
-    "만 나이, 단위 가격 비교, 이미지 압축, 보색 찾기, 대출 계산 등 일상에서 바로 쓰는 무료 온라인 도구 모음",
-  keywords: [
-    "만 나이 계산기",
-    "BMI 계산기",
-    "대출 이자 계산기",
-    "퇴직금 계산기",
-    "기념일 계산기",
-    "디데이 계산기",
-    "이미지 압축",
-    "글자수 세기",
-  ],
-  metadataBase: new URL("https://rate-snap.com"),
+};
+
+export const metadata: Metadata = {
+  metadataBase: SITE_METADATA_BASE,
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: SITE_KEYWORDS,
   alternates: {
-    canonical: "https://rate-snap.com",
-    languages: {
-      "ko": "https://rate-snap.com",
-      "en": "https://rate-snap.com",
-      "x-default": "https://rate-snap.com",
-    },
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
   verification: {
     google: "MonEK12xkfiRwDS7Uxw6iCZaroYf1GHztTivnR7fDwQ",
@@ -49,21 +69,17 @@ export default function RootLayout({
     <html lang="ko" className="h-full" suppressHydrationWarning>
       <head>
         {/* 다크모드 flash 방지 */}
-        <script dangerouslySetInnerHTML={{ __html: `(function(){var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(t==null&&d)){document.documentElement.classList.add('dark');}})();` }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(t==null&&d)){document.documentElement.classList.add('dark');}})();",
+          }}
+        />
         {/* WebSite 구조화 데이터 */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "Korean Tools",
-          "url": "https://rate-snap.com",
-          "description": "날짜 계산, 텍스트 변환, 이미지 처리, 생활 계산까지. 한국에서 자주 쓰는 실용 도구를 한곳에 모았습니다.",
-          "inLanguage": ["ko", "en"],
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": { "@type": "EntryPoint", "urlTemplate": "https://rate-snap.com/?q={search_term_string}" },
-            "query-input": "required name=search_term_string"
-          }
-        }) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-VX6R9QFSQ5"

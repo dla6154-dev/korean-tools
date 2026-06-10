@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLanguage } from "../language-context";
+import { useToolAnalytics } from "../use-tool-analytics";
 
 const T = {
   ko: {
@@ -49,6 +50,8 @@ const T = {
 export default function CharactersClient() {
   const { lang } = useLanguage();
   const t = T[lang];
+  const { markStart, trackComplete, trackCopyResult } = useToolAnalytics("characters", lang);
+  const completionTrackedRef = useRef(false);
   const [text, setText] = useState("");
 
   const totalChars = text.length;
@@ -57,6 +60,48 @@ export default function CharactersClient() {
   const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
   const sentences = text.trim() === "" ? 0 : text.split(/[.!?。]+/).filter((s) => s.trim().length > 0).length;
   const lines = text === "" ? 0 : text.split("\n").length;
+
+  function handleTextChange(nextText: string) {
+    setText(nextText);
+
+    if (nextText.trim().length === 0) {
+      return;
+    }
+
+    markStart({ input_length: nextText.length });
+
+    if (!completionTrackedRef.current && nextText.trim().length >= 20) {
+      completionTrackedRef.current = true;
+      trackComplete({
+        text_length: nextText.length,
+        completion_source: "typing",
+      });
+    }
+  }
+
+  async function handleCopy() {
+    if (!text || typeof navigator === "undefined" || !navigator.clipboard) {
+      return;
+    }
+
+    markStart({ input_length: text.length });
+    await navigator.clipboard.writeText(text);
+
+    if (!completionTrackedRef.current) {
+      completionTrackedRef.current = true;
+      trackComplete({
+        text_length: text.length,
+        completion_source: "copy",
+      });
+    }
+
+    trackCopyResult({ text_length: text.length });
+  }
+
+  function handleClear() {
+    setText("");
+    completionTrackedRef.current = false;
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10 space-y-6">
@@ -69,13 +114,13 @@ export default function CharactersClient() {
         <div className="flex items-center justify-between mb-3">
           <label className="text-sm font-medium text-slate-600">{t.inputLabel}</label>
           <div className="flex gap-2">
-            <button onClick={() => navigator.clipboard.writeText(text)} disabled={!text} className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 transition-colors">{t.copy}</button>
-            <button onClick={() => setText("")} disabled={!text} className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 transition-colors">{t.clear}</button>
+            <button onClick={handleCopy} disabled={!text} className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 transition-colors">{t.copy}</button>
+            <button onClick={handleClear} disabled={!text} className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 transition-colors">{t.clear}</button>
           </div>
         </div>
         <textarea
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => handleTextChange(e.target.value)}
           placeholder={t.placeholder}
           className="w-full h-52 border border-slate-200 rounded-xl px-4 py-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-slate-300"
         />

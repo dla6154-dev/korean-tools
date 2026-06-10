@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import HomePageClient from "./home-page-client";
 
 export const metadata: Metadata = {
-  title: "Korean Tools",
+  title: "날짜 계산기, 단위 가격 비교, 글자 수 세기, 이미지 도구",
   description:
-    "留??섏씠 怨꾩궛湲? ?붾뜲??怨꾩궛湲? 湲?먯닔 ?멸린, ?대?吏 ?뺤텞湲????쒓뎅???ㅼ슜 ?꾧뎄瑜?臾대즺濡?鍮좊Ⅴ寃??ъ슜?????덉뒿?덈떎.",
+    "한국어 사용자가 자주 찾는 날짜 계산기, 단위 가격 비교기, 글자 수 세기, 이미지 도구를 한곳에 모았습니다. 설치 없이 무료로 바로 사용할 수 있습니다.",
+  keywords: [
+    "날짜 계산기",
+    "단위 가격 비교",
+    "글자 수 세기",
+    "이미지 압축",
+    "생활 도구 모음",
+  ],
   alternates: {
     canonical: "/",
   },

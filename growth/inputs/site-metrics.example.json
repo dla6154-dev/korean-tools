@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-06-10T00:00:00.000Z",
+  "summary": {
+    "sessions7d": 0,
+    "sessions30d": 0,
+    "sessions90d": 0,
+    "organicSessions30d": 0,
+    "organicShare30d": 0,
+    "searchClicks30d": 0,
+    "searchImpressions30d": 0,
+    "averageCtr30d": 0,
+    "averagePosition30d": 0,
+    "repeatUserRate30d": 0,
+    "toolCompletionRate30d": 0
+  },
+  "topPages": [
+    {
+      "path": "/date-calc",
+      "sessions30d": 34,
+      "organicSessions30d": 12,
+      "searchClicks30d": 7,
+      "searchImpressions30d": 240,
+      "ctr30d": 0.029,
+      "averagePosition30d": 11.4,
+      "completionRate": 0.53,
+      "note": "Example row"
+    }
+  ],
+  "topQueries": [
+    {
+      "query": "날짜 계산기",
+      "page": "/date-calc",
+      "clicks30d": 8,
+      "impressions30d": 340,
+      "ctr30d": 0.024,
+      "averagePosition30d": 12.1
+    }
+  ],
+  "issues": [
+    {
+      "type": "search-console",
+      "severity": "medium",
+      "message": "Example issue: sitemap submitted but query data is still sparse."
+    }
+  ],
+  "notes": [
+    "Copy this file to growth/inputs/site-metrics.json and replace with real exports."
+  ]
+}

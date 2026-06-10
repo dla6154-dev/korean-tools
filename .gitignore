@@ -40,4 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local growth artifacts
+growth/inputs/site-metrics.json
+growth/output/*
+!growth/output/.gitkeep
+
 .vercel
