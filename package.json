@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "growth:authorize": "node scripts/growth-oauth-authorize.mjs",
     "growth:fetch": "node scripts/growth-fetch.mjs",
     "growth:import": "node scripts/growth-import.mjs",
     "growth:push-secrets": "node scripts/growth-push-secrets.mjs",

@@ -49,10 +49,19 @@ function base64UrlEncode(input) {
   return buffer.toString("base64url");
 }
 
-function parseServiceAccount() {
+function readTrimmedEnv(name) {
+  return String(process.env[name] ?? "").trim();
+}
+
+function parseServiceAccountCredentials() {
   const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  if (credentialsPath && fs.existsSync(credentialsPath)) {
-    return JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
+  if (credentialsPath) {
+    const resolvedPath = path.resolve(credentialsPath);
+    if (!fs.existsSync(resolvedPath)) {
+      throw new Error(`GOOGLE_APPLICATION_CREDENTIALS file not found: ${resolvedPath}`);
+    }
+
+    return JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
   }
 
   if (process.env.GOOGLE_SERVICE_ACCOUNT_BASE64) {
@@ -64,8 +73,49 @@ function parseServiceAccount() {
     return JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
   }
 
+  return null;
+}
+
+function parseOAuthCredentials() {
+  const clientId = readTrimmedEnv("GOOGLE_OAUTH_CLIENT_ID");
+  const clientSecret = readTrimmedEnv("GOOGLE_OAUTH_CLIENT_SECRET");
+  const refreshToken = readTrimmedEnv("GOOGLE_OAUTH_REFRESH_TOKEN");
+  const providedCount = [clientId, clientSecret, refreshToken].filter(Boolean).length;
+
+  if (providedCount === 0) {
+    return null;
+  }
+
+  if (providedCount !== 3) {
+    throw new Error(
+      "Incomplete Google OAuth credentials. Set GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, and GOOGLE_OAUTH_REFRESH_TOKEN.",
+    );
+  }
+
+  return {
+    type: "oauth_refresh_token",
+    clientId,
+    clientSecret,
+    refreshToken,
+  };
+}
+
+function parseGoogleCredentials() {
+  const serviceAccount = parseServiceAccountCredentials();
+  if (serviceAccount) {
+    return {
+      type: "service_account",
+      serviceAccount,
+    };
+  }
+
+  const oauthCredentials = parseOAuthCredentials();
+  if (oauthCredentials) {
+    return oauthCredentials;
+  }
+
   throw new Error(
-    "Missing Google credentials. Set GOOGLE_SERVICE_ACCOUNT_BASE64, GOOGLE_SERVICE_ACCOUNT_JSON, or GOOGLE_APPLICATION_CREDENTIALS.",
+    "Missing Google credentials. Set a service account credential or GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, and GOOGLE_OAUTH_REFRESH_TOKEN.",
   );
 }
 
@@ -90,7 +140,7 @@ function createServiceAccountAssertion(serviceAccount, scopes) {
   return `${unsignedToken}.${base64UrlEncode(signature)}`;
 }
 
-async function getAccessToken(serviceAccount, scopes) {
+async function getServiceAccountAccessToken(serviceAccount, scopes) {
   const assertion = createServiceAccountAssertion(serviceAccount, scopes);
   const body = new URLSearchParams({
     grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
@@ -116,6 +166,47 @@ async function getAccessToken(serviceAccount, scopes) {
   }
 
   return payload.access_token;
+}
+
+async function getOAuthRefreshTokenAccessToken(credentials) {
+  const body = new URLSearchParams({
+    client_id: credentials.clientId,
+    client_secret: credentials.clientSecret,
+    refresh_token: credentials.refreshToken,
+    grant_type: "refresh_token",
+  });
+
+  const response = await fetch(TOKEN_AUDIENCE, {
+    method: "POST",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to refresh Google OAuth access token: ${response.status} ${errorText}`);
+  }
+
+  const payload = await response.json();
+  if (!payload.access_token) {
+    throw new Error("Google OAuth token response did not include access_token.");
+  }
+
+  return payload.access_token;
+}
+
+async function getAccessToken(credentials, scopes) {
+  if (credentials.type === "service_account") {
+    return getServiceAccountAccessToken(credentials.serviceAccount, scopes);
+  }
+
+  if (credentials.type === "oauth_refresh_token") {
+    return getOAuthRefreshTokenAccessToken(credentials);
+  }
+
+  throw new Error(`Unsupported Google credential type: ${credentials.type}`);
 }
 
 async function fetchGoogleJson(url, accessToken, options = {}) {
@@ -542,8 +633,8 @@ export async function fetchGrowthMetrics() {
     throw new Error("Missing GSC_SITE_URL.");
   }
 
-  const serviceAccount = parseServiceAccount();
-  const accessToken = await getAccessToken(serviceAccount, [GA_SCOPE, GSC_SCOPE]);
+  const credentials = parseGoogleCredentials();
+  const accessToken = await getAccessToken(credentials, [GA_SCOPE, GSC_SCOPE]);
   const propertyId = await resolveGaPropertyId(accessToken, configuredPropertyId, measurementId);
 
   const gaDateRange = buildDateRange(30, getIntEnv("GROWTH_GA4_END_OFFSET_DAYS", 1));

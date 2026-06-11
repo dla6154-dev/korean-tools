@@ -35,6 +35,10 @@ function inferRepository() {
   throw new Error("Could not infer GitHub repository from remote.origin.url.");
 }
 
+function readTrimmedEnv(name) {
+  return String(process.env[name] ?? "").trim();
+}
+
 function readServiceAccountSecretValue() {
   if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
     return process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -50,6 +54,29 @@ function readServiceAccountSecretValue() {
   }
 
   return "";
+}
+
+function readOAuthSecretValues() {
+  const clientId = readTrimmedEnv("GOOGLE_OAUTH_CLIENT_ID");
+  const clientSecret = readTrimmedEnv("GOOGLE_OAUTH_CLIENT_SECRET");
+  const refreshToken = readTrimmedEnv("GOOGLE_OAUTH_REFRESH_TOKEN");
+  const providedCount = [clientId, clientSecret, refreshToken].filter(Boolean).length;
+
+  if (providedCount === 0) {
+    return null;
+  }
+
+  if (providedCount !== 3) {
+    throw new Error(
+      "Incomplete Google OAuth credentials. Set GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, and GOOGLE_OAUTH_REFRESH_TOKEN before pushing secrets.",
+    );
+  }
+
+  return {
+    clientId,
+    clientSecret,
+    refreshToken,
+  };
 }
 
 function setSecret(repo, name, value) {
@@ -68,6 +95,7 @@ export function pushGrowthSecrets() {
   const measurementId = String(process.env.GA4_MEASUREMENT_ID ?? "").trim();
   const siteUrl = String(process.env.GSC_SITE_URL ?? "").trim();
   const serviceAccountJson = readServiceAccountSecretValue().trim();
+  const oauthSecrets = readOAuthSecretValues();
   const updatedSecrets = [];
   const updatedVariables = [];
 
@@ -89,6 +117,17 @@ export function pushGrowthSecrets() {
   if (serviceAccountJson) {
     setSecret(repo, "GOOGLE_SERVICE_ACCOUNT_JSON", serviceAccountJson);
     updatedSecrets.push("GOOGLE_SERVICE_ACCOUNT_JSON");
+  }
+
+  if (oauthSecrets) {
+    setSecret(repo, "GOOGLE_OAUTH_CLIENT_ID", oauthSecrets.clientId);
+    setSecret(repo, "GOOGLE_OAUTH_CLIENT_SECRET", oauthSecrets.clientSecret);
+    setSecret(repo, "GOOGLE_OAUTH_REFRESH_TOKEN", oauthSecrets.refreshToken);
+    updatedSecrets.push(
+      "GOOGLE_OAUTH_CLIENT_ID",
+      "GOOGLE_OAUTH_CLIENT_SECRET",
+      "GOOGLE_OAUTH_REFRESH_TOKEN",
+    );
   }
 
   const optionalVariables = [

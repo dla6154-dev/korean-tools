@@ -54,6 +54,7 @@ Artifacts are written to:
 ### Available growth scripts
 
 ```bash
+npm run growth:authorize
 npm run growth:fetch
 npm run growth:import
 npm run growth:push-secrets
@@ -76,13 +77,14 @@ If no safe `auto_pr_candidate` exists, it writes execution artifacts but makes n
 
 ### Live data setup
 
-You can connect real GA4 and Search Console data with a Google service account.
+You can connect real GA4 and Search Console data with either a Google service account or a user OAuth refresh token.
 
 Required environment variables:
 
 - one of `GA4_PROPERTY_ID` or `GA4_MEASUREMENT_ID`
 - `GSC_SITE_URL`
-- one of `GOOGLE_SERVICE_ACCOUNT_BASE64`, `GOOGLE_SERVICE_ACCOUNT_JSON`, or `GOOGLE_APPLICATION_CREDENTIALS`
+- either `GOOGLE_SERVICE_ACCOUNT_BASE64`, `GOOGLE_SERVICE_ACCOUNT_JSON`, or `GOOGLE_APPLICATION_CREDENTIALS`
+- or `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, and `GOOGLE_OAUTH_REFRESH_TOKEN`
 
 Optional environment variables:
 
@@ -93,20 +95,28 @@ Optional environment variables:
 Setup notes:
 
 - Enable the Google Analytics Data API.
-- Add the service account as at least `Viewer` or `Analyst` on the GA4 property.
-- Add the same service account as an owner or full user to the Search Console property.
+- If you use a service account, add it as at least `Viewer` or `Analyst` on the GA4 property.
+- If you use a service account, add the same identity as an owner or full user to the Search Console property.
+- If GA4 refuses a service-account email, use the OAuth flow instead.
 - `GSC_SITE_URL` must exactly match the Search Console property identifier, for example `https://example.com/` or `sc-domain:example.com`.
 
 For local development, the simplest option is:
 
-1. Save the service account key JSON to a local file.
-2. Put this in `.env.local`:
+1. Choose one auth mode.
+2. For a service account, save the key JSON to a local file.
+3. Put this in `.env.local`:
 
 ```bash
 GA4_PROPERTY_ID=123456789
 # or GA4_MEASUREMENT_ID=G-XXXXXXXXXX
 GSC_SITE_URL=https://example.com/
 GOOGLE_APPLICATION_CREDENTIALS=C:\path\to\service-account.json
+```
+
+Or generate a user refresh token directly into `.env.local`:
+
+```bash
+npm run growth:authorize -- --client-secret C:\path\to\client-secret.json --write-env
 ```
 
 If your GitHub CLI is already authenticated, you can push the repo secrets and variables in one shot:
@@ -121,6 +131,7 @@ This command reads `.env.local`, writes:
 - `GA4_PROPERTY_ID` if present
 - `GA4_MEASUREMENT_ID` if present
 - `GOOGLE_SERVICE_ACCOUNT_JSON` if present
+- `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`, and `GOOGLE_OAUTH_REFRESH_TOKEN` if present
 
 and also pushes optional repo variables when present:
 

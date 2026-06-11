@@ -18,6 +18,9 @@ jobs:
       GSC_SITE_URL: ${{ vars.GSC_SITE_URL }}
       GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
       GOOGLE_SERVICE_ACCOUNT_BASE64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_BASE64 }}
+      GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+      GOOGLE_OAUTH_REFRESH_TOKEN: ${{ secrets.GOOGLE_OAUTH_REFRESH_TOKEN }}
       GROWTH_GA4_END_OFFSET_DAYS: ${{ vars.GROWTH_GA4_END_OFFSET_DAYS }}
       GROWTH_GSC_END_OFFSET_DAYS: ${{ vars.GROWTH_GSC_END_OFFSET_DAYS }}
       GSC_SEARCH_TYPE: ${{ vars.GSC_SEARCH_TYPE }}
@@ -36,7 +39,7 @@ jobs:
         run: npm ci
 
       - name: Fetch live growth metrics
-        if: (env.GA4_PROPERTY_ID != '' || env.GA4_MEASUREMENT_ID != '') && env.GSC_SITE_URL != '' && (env.GOOGLE_SERVICE_ACCOUNT_JSON != '' || env.GOOGLE_SERVICE_ACCOUNT_BASE64 != '')
+        if: (env.GA4_PROPERTY_ID != '' || env.GA4_MEASUREMENT_ID != '') && env.GSC_SITE_URL != '' && ((env.GOOGLE_SERVICE_ACCOUNT_JSON != '' || env.GOOGLE_SERVICE_ACCOUNT_BASE64 != '') || (env.GOOGLE_OAUTH_CLIENT_ID != '' && env.GOOGLE_OAUTH_CLIENT_SECRET != '' && env.GOOGLE_OAUTH_REFRESH_TOKEN != ''))
         run: npm run growth:fetch
 
       - name: Run growth loop
