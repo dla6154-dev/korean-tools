@@ -1,4 +1,9 @@
 {
   "homepagePromotions": [],
-  "metadataOverrides": {}
+  "metadataOverrides": {
+    "/date-calc": {
+      "title": "날짜 계산기 | 며칠 후 날짜, 100일, 기념일 계산",
+      "description": "날짜 계산기가 필요할 때 기준 날짜에서 며칠 후 또는 이전 날짜를 바로 계산하세요. 100일, 기념일, 마감일 계산까지 한 번에 확인할 수 있습니다."
+    }
+  }
 }
